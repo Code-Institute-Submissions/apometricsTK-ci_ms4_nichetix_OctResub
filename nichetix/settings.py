@@ -33,8 +33,11 @@ SECRET_KEY = os.environ.get('SECRET_KEY', '')
 DEBUG = "DEVELOPMENT" in os.environ
 
 SECURE_SSL_REDIRECT = "DEVELOPMENT" not in os.environ
+SESSION_COOKIE_HTTPONLY = True
 SESSION_COOKIE_SECURE = "DEVELOPMENT" not in os.environ
+CSRF_COOKIE_HTTPONLY = True
 CSRF_COOKIE_SECURE = "DEVELOPMENT" not in os.environ
+SECURE_BROWSER_XSS_FILTER = True
 
 ALLOWED_HOSTS = [
     "localhost",
@@ -56,8 +59,8 @@ INSTALLED_APPS = [
     "allauth",
     "allauth.account",
     "allauth.socialaccount",
-
     # own apps
+    "users",
 ]
 
 
@@ -78,6 +81,7 @@ TEMPLATES = [
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
             os.path.join(BASE_DIR, 'templates'),
+            os.path.join(BASE_DIR, 'templates', 'allauth'),
         ],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -115,6 +119,8 @@ else:
     EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
     EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASS')
     DEFAULT_FROM_EMAIL = os.environ.get('EMAIL_HOST_USER')
+
+AUTH_USER_MODEL = "users.User"
 
 ACCOUNT_AUTHENTICATION_METHOD = 'username_email'
 ACCOUNT_EMAIL_REQUIRED = True

@@ -9,7 +9,7 @@ class User(AbstractUser):
     is_host = hosts events etc
     default stripe data
     """
-    is_host = models.BooleanField("host status", default=False)
+    is_host = models.BooleanField("host status", default=False)  # todo: can_host
     company_name = models.CharField("name of the host company", max_length=80, null=True, blank=True)
     default_phone_number = models.CharField("default phone number for stripe", max_length=20, null=True, blank=True)
     default_street_address1 = models.CharField("default street address1 for stripe",

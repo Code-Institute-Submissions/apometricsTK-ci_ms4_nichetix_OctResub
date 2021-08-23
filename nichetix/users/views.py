@@ -43,7 +43,4 @@ class UserUpdateView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
         """
         If successful Update, return to detail page
         """
-        return reverse(
-            "users:detail",
-            kwargs={"username": self.request.user.username},
-        )
+        return reverse("users:detail")

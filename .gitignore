@@ -4,3 +4,7 @@ __pycache__/
 env.py
 venv/
 .idea/
+
+.pytest_cache/
+htmlcov/
+.coverage

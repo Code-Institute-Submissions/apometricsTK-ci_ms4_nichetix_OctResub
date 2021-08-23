@@ -1,10 +1,20 @@
 <nav>
     Here is the navbar
     <ul>
-        <li>
-            <a href="{% url "account_signup" %}">Signup</a>
-            <a href="{% url "account_login" %}">Login</a>
-            <a href="{% url "account_logout" %}">Logout</a>
-        </li>
+        {% if request.user.is_authenticated %}
+            <li>
+                <a href="{% url "users:detail" %}">Profile</a>
+            </li>
+            <li>
+                <a href="{% url "account_logout" %}">Logout</a>
+            </li>
+        {% else %}
+            <li>
+                <a href="{% url "account_signup" %}">Signup</a>
+            </li>
+            <li>
+                <a href="{% url "account_login" %}">Login</a>
+            </li>
+        {% endif %}
     </ul>
 </nav>

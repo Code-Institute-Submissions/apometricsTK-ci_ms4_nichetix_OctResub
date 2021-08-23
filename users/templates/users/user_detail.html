@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block extra_title %}
+    {{ object.username }}
+{% endblock extra_title%}
+
+{% block content %}
+
+    <h2>Name: {{ object.username }}</h2>
+    {% if object.company_name %}
+        <p>Company: {{ object.company_name }}</p>
+    {% endif %}
+
+    <p>Email: {{ object.email }}</p>
+    <p>Phone: {{ object.default_phone_number }} </p>
+
+    <p>Street Address1: {{ object.default_street_address1 }}</p>
+    <p>Street Address2: {{ object.default_street_address2 }}</p>
+    <p>City: {{ object.default_town_or_city }}</p>
+    <p>County: {{ object.default_county }}</p>
+    <p>Postcode: {{ object.default_postcode }}</p>
+    <p>Country: {{ object.default_country }}</p>
+
+    <a href="{% url "users:update" %}">Update profile</a>
+    <a href="{% url "account_email" %}">Manage email</a>
+
+{% endblock content %}

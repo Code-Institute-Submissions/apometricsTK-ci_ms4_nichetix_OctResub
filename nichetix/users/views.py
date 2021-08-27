@@ -2,7 +2,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.views.generic import DetailView, UpdateView
-from django.urls import reverse
+from django.urls import reverse_lazy
 
 User = get_user_model()
 
@@ -10,9 +10,9 @@ User = get_user_model()
 class UserDetailView(LoginRequiredMixin, DetailView):
     model = User
 
-    def get_object(self):
+    def get_object(self, **kwargs):
         """
-        Get the user from request
+        Get the user from request, get or 404 shouldn't be necessary (LoginRequired).
         """
         return User.objects.get(username=self.request.user.username)
 
@@ -31,16 +31,26 @@ class UserUpdateView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
     # email? allauth version?
     model = User
 
-    def get_object(self):
+    def get_object(self, **kwargs):
         """
-        Get the user from request
+        Get the user from request, get or 404 shouldn't be necessary (LoginRequired).
         """
         return User.objects.get(username=self.request.user.username)
 
     success_message = "Update successful."
+    success_url = reverse_lazy("users:detail")
 
-    def get_success_url(self):
+
+class UserApplicationView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
+    model = User
+    fields = ["can_host"]
+    template_name = "users/user_apply.html"
+
+    success_message = "Application successful."
+    success_url = reverse_lazy("users:detail")
+
+    def get_object(self, **kwargs):
         """
-        If successful Update, return to detail page
+        Get the user from request, get or 404 shouldn't be necessary (LoginRequired).
         """
-        return reverse("users:detail")
+        return User.objects.get(username=self.request.user.username)

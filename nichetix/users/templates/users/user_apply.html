@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% load crispy_forms_tags %}
+
+{% block extra_title %}
+    {{ user.username }}
+{% endblock extra_title %}
+
+{% block content %}
+  <h2>Username: {{ user.username }}</h2>
+    <div>
+        Some real-life application process has to be implemented here.
+    </div>
+    <form class="form-horizontal" method="post" action="{% url 'users:apply_host' %}">
+        {% csrf_token %}
+        {{ form | crispy }}
+        <div class="control-group">
+            <div class="controls">
+                <button type="submit">Apply</button>
+            </div>
+        </div>
+    </form>
+{% endblock content %}

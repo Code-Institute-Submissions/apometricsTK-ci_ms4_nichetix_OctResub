@@ -23,5 +23,7 @@
 
     <a href="{% url "users:update" %}">Update profile</a>
     <a href="{% url "account_email" %}">Manage email</a>
-
+    {% if not object.can_host %}
+        <a href="{% url "users:apply_host" %}">Apply to host events</a>
+    {% endif %}
 {% endblock content %}

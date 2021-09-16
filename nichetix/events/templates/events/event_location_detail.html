@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block extra_title %}
+    {{ object.name }}
+{% endblock extra_title%}
+
+{% block content %}
+
+    <h2>{{ object.name }}</h2>
+
+        <div>
+            <p>Name: {{ object.name }}</p>
+            <p>Google Places Id: {{ object.google_places_id }}</p>
+            <p>Street Address1: {{ object.street_address1 }}</p>
+            <p>Street Address2: {{ object.street_address2 }}</p>
+            <p>Town or City: {{ object.town_or_city }}</p>
+            <p>County: {{ object.county }}</p>
+            <p>Postcode: {{ object.postcode }}</p>
+            <p>Country: {{ object.country }}</p>
+            <p>Phone Number: {{ object.phone_number }}</p>
+            <p>Email: {{ object.email }}</p>
+            <a href="{{ object.foreign_url }}">{{ object.foreign_url }}</a>
+
+            <a href="{% url "events:location-update" object.slug %}">Update Location</a>
+        </div>
+
+{% endblock content %}

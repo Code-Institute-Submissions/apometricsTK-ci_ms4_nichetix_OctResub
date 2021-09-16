@@ -1,6 +1,10 @@
 <nav>
     Here is the navbar
     <ul>
+        <li>
+            <a href="{% url "events:upcoming" %}">Home</a>
+        </li>
+
         {% if request.user.is_authenticated %}
             <li>
                 <a href="{% url "users:detail" %}">Profile</a>
@@ -14,6 +18,21 @@
             </li>
             <li>
                 <a href="{% url "account_login" %}">Login</a>
+            </li>
+        {% endif %}
+
+        {% if request.user.can_host %}
+            <li>
+                <a href="{% url "events:create" %}">Create Event</a>
+            </li>
+            <li>
+                <a href="{% url "events:manage" %}">Manage my Events</a>
+            </li>
+             <li>
+                <a href="{% url "events:location-create" %}">Create Location</a>
+            </li>
+            <li>
+                <a href="{% url "events:locations" %}">Manage my Locations</a>
             </li>
         {% endif %}
     </ul>

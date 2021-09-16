@@ -3,20 +3,20 @@
 {% load crispy_forms_tags %}
 
 {% block extra_title %}
-    {{ user.username }}
+    Create Event
 {% endblock extra_title %}
 
 {% block content %}
 
-  <h2>Username: {{ user.username }}</h2>
-    <form class="form-horizontal" method="post" action="{% url "users:update" %}">
+  <h2>Create Event</h2>
+    <form class="form-horizontal" method="post" action="{% url "events:create" %}">
         {% csrf_token %}
         {{ form | crispy }}
         <div class="control-group">
             <div class="controls">
-                <button type="submit">Update</button>
+                <button type="submit">Create</button>
             </div>
         </div>
-
     </form>
+
 {% endblock content %}

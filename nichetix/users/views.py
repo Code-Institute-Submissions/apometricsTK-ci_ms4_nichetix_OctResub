@@ -31,14 +31,14 @@ class UserUpdateView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
     # email? allauth version?
     model = User
 
+    success_message = "Update successful."
+    success_url = reverse_lazy("users:detail")
+
     def get_object(self, **kwargs):
         """
         Get the user from request, get or 404 shouldn't be necessary (LoginRequired).
         """
         return User.objects.get(username=self.request.user.username)
-
-    success_message = "Update successful."
-    success_url = reverse_lazy("users:detail")
 
 
 class UserApplicationView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):

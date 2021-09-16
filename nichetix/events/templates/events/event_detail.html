@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block extra_title %}
+    {{ object.title }}
+{% endblock extra_title%}
+
+{% block content %}
+
+    <h2>{{ object.title }}</h2>
+    <div>
+        <p> {{ object.description_short }}</p>
+        <p>Date start: {{ object.date_start }}</p>
+        <p>Date end: {{ object.date_end }}</p>
+        <p>Location: {{ object.location }}, {{ object.location.foreign_url }}</p>
+        <p>Host: {{ object.description_host }}</p>
+        <p>Description: {{ object.description_long }}</p>
+        <p>Event url: {{ object.foreign_url }}</p>
+        <p>Image: {{ object.image }}</p>
+        <p>Image URL: {{ object.image_url }}</p>
+    </div>
+
+    {% if request.user.id == object.host_id %}
+    <div>
+        <a href="{% url "events:update" object.slug %}">Update event information</a>
+        <a href="{% url "events:detail" object.slug %}">Todo: Add ticket types</a>
+    </div>
+    {% endif %}
+
+{% endblock content %}

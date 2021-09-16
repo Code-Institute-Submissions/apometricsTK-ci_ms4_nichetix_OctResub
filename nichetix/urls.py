@@ -20,4 +20,5 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("accounts/", include("allauth.urls"), name="accounts"),
     path("users/", include("nichetix.users.urls"), name="users"),
+    path("", include("nichetix.events.urls"), name="events"),
 ]

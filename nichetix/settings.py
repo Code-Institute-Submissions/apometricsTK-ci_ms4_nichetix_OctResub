@@ -63,6 +63,7 @@ INSTALLED_APPS = [
     "crispy_bootstrap5",
     # own apps
     "nichetix.users",
+    "nichetix.events",
 ]
 
 

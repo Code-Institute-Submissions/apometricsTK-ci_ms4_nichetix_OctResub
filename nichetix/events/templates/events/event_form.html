@@ -3,13 +3,13 @@
 {% load crispy_forms_tags %}
 
 {% block extra_title %}
-    {{ user.username }}
+    {{ object.title }}
 {% endblock extra_title %}
 
 {% block content %}
 
-  <h2>Username: {{ user.username }}</h2>
-    <form class="form-horizontal" method="post" action="{% url "users:update" %}">
+  <h2> {{ object.title }}</h2>
+    <form class="form-horizontal" method="post" action="{% url "events:update" object.slug %}">
         {% csrf_token %}
         {{ form | crispy }}
         <div class="control-group">
@@ -17,6 +17,6 @@
                 <button type="submit">Update</button>
             </div>
         </div>
-
     </form>
+
 {% endblock content %}

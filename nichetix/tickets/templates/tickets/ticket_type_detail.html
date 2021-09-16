@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block extra_title %}
+    {{ object.event.title }} - {{ object.name }}
+{% endblock extra_title %}
+
+{% block content %}
+
+    <h2>{{ object.event.title }}</h2>
+    <h3>{{ object.name }}</h3>
+    <div>
+        <p>Description: {{ object.description_long }}</p>
+        <p>Sale start: {{ object.sale_start }}</p>
+        <p>Sale end: {{ object.sale_end }}</p>
+        <p>Quota: {{ object.quota }}</p>
+        <p>Price, net: {{ object.price_net }}</p>
+        <p>Tax: {{ object.tax }}</p>
+        <a href="{% url "events:detail" object.event.slug %}">Event Details</a>
+        <a href="{% url "tickets:ticket-type-update" slug=object.slug event_slug=object.event.slug %}">
+            Update
+        </a>
+    </div>
+
+{% endblock content %}

@@ -16,7 +16,7 @@
 
         {% if request.user == event.host %}
                 <a href="{% url "events:update" event.slug %}">Update event information</a>
-                <a href="{% url "events:detail" event.slug %}">Todo: Add ticket types</a>
+                <a href="{% url "tickets:ticket-type-create" event.slug %}">Add ticket type</a>
         {% endif %}
 
         </div>

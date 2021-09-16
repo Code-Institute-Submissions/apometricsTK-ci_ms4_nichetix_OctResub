@@ -7,6 +7,7 @@ from django.utils import timezone
 
 from .models import Event, Location
 from .forms import EventForm, LocationForm
+from nichetix.tickets.models import TicketType
 
 User = get_user_model()
 
@@ -31,6 +32,11 @@ class EventsDetailView(DetailView):
     model = Event
     slug_field = "slug"
     template_name = "events/event_detail.html"
+
+    def get_context_data(self, **kwargs):
+        context = super(EventsDetailView, self).get_context_data(**kwargs)
+        context["ticket_type_list"] = TicketType.objects.filter(event=self.object)
+        return context
 
 
 # todo: refactor Create & Update View to a single class?

@@ -64,6 +64,7 @@ INSTALLED_APPS = [
     # own apps
     "nichetix.users",
     "nichetix.events",
+    "nichetix.tickets",
 ]
 
 

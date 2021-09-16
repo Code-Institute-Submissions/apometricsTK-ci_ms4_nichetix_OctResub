@@ -5,7 +5,9 @@ from django_countries.fields import CountryField
 
 # todo: handle ProtectedError on Location.owner, Event.host, Event.location
 # todo: implement deleted, active/inactive marker
+# todo: implement review process
 # todo: urls doesnt change vs upd title on Event.slug
+
 
 class Location(models.Model):
     """
@@ -43,8 +45,7 @@ class Event(models.Model):
     description_short = models.CharField("Tweetable Description", max_length=280, )
     description_long = models.TextField("Text Description", )
     description_host = models.CharField("Host name and info", max_length=560, )
-    location = models.ForeignKey(Location,
-                                 on_delete=models.PROTECT)
+    location = models.ForeignKey(Location, on_delete=models.PROTECT)
     date_start = models.DateTimeField("Event Start", )
     date_end = models.DateTimeField("Event End", )
 

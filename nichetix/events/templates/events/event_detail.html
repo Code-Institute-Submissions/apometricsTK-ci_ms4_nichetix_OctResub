@@ -17,6 +17,16 @@
         <p>Event url: {{ object.foreign_url }}</p>
         <p>Image: {{ object.image }}</p>
         <p>Image URL: {{ object.image_url }}</p>
+
+        {% if request.user.id != object.host_id %}
+            {% for ticket_type in ticket_type_list %}
+                <div>
+                    <h3>{{ ticket_type.name }}</h3>
+                    <p>{{ ticket_type.description_long }}</p>
+                    <p>Price: {{ ticket_type.price }}</p>
+                </div>
+            {% endfor %}
+        {% endif %}
     </div>
 
     {% if request.user.id == object.host_id %}
@@ -34,6 +44,7 @@
                 <p>Quota: {{ ticket_type.quota }}</p>
                 <p>Price, net: {{ ticket_type.price_net }}</p>
                 <p>Tax: {{ ticket_type.tax }}</p>
+                <p>Price: {{ ticket_type.price }}</p>
                 <a href="{% url "tickets:ticket-type-detail" slug=ticket_type.slug event_slug=ticket_type.event.slug %}">
                     Detail
                 </a>

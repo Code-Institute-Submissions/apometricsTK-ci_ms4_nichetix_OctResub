@@ -190,3 +190,11 @@ STATIC_URL = '/static/'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+# Ticket Tax Rates
+# set like this:
+# BASE_PERCENT = 19.0
+BASE_PERCENT = 19.0
+CUT_PERCENT = 7.0
+ZERO_PERCENT = 0.0

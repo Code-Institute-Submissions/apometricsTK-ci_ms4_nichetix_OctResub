@@ -14,7 +14,9 @@
         <p>Sale end: {{ object.sale_end }}</p>
         <p>Quota: {{ object.quota }}</p>
         <p>Price, net: {{ object.price_net }}</p>
-        <p>Tax: {{ object.tax }}</p>
+        <p>Tax: {{ object.tax_percent }} %</p>
+        <p>Tax amount: {{ object.tax_amount }}</p>
+        <p>Price: {{ object.price }}</p>
         <a href="{% url "events:detail" object.event.slug %}">Event Details</a>
         <a href="{% url "tickets:ticket-type-update" slug=object.slug event_slug=object.event.slug %}">
             Update

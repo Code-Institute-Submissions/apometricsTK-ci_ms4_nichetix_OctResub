@@ -1,6 +1,8 @@
+from decimal import Decimal, ROUND_HALF_UP
 import uuid
 
 from django.db import models
+from django.conf import settings
 from autoslug import AutoSlugField
 
 from nichetix.events.models import Event
@@ -11,16 +13,20 @@ class TicketType(models.Model):
     Ticket Type for tickets to sell
 
     Choices for Tax Rates
-    germany: 19% base, 7% reduced for concerts and theater, no tax for education
+    germany: 19% base, 7% reduced for concerts and theater, no tax for education(with constraints)
+    Tax Percentages are set in settings.py
     """
     BASE = "base"
+    BASE_PERCENT = settings.BASE_PERCENT
     CUT = "cut"
+    CUT_PERCENT = settings.CUT_PERCENT
     ZERO = "zero"
+    ZERO_PERCENT = settings.ZERO_PERCENT
 
     TAX_RATES = (
-        (BASE, 19.0),
-        (CUT, 7.0),
-        (ZERO, 0.0),
+        (BASE, BASE_PERCENT),
+        (CUT, CUT_PERCENT),
+        (ZERO, ZERO_PERCENT),
     )
 
     event = models.ForeignKey(Event, on_delete=models.PROTECT)
@@ -33,11 +39,27 @@ class TicketType(models.Model):
 
     quota = models.PositiveSmallIntegerField("Quota", )
     price_net = models.DecimalField("Price", max_digits=6, decimal_places=2)
-    tax = models.CharField("Tax rate", max_length=4, choices=TAX_RATES)
+    tax = models.CharField("Tax rate", max_length=4, choices=TAX_RATES, blank=False, default=BASE)
 
     def __str__(self):
         return str(self.name)
 
+    @property
+    def tax_percent(self):
+        if self.tax == self.BASE:
+            return Decimal(self.BASE_PERCENT)
+        elif self.tax == self.CUT:
+            return Decimal(self.CUT_PERCENT)
+        else:
+            return Decimal(self.ZERO_PERCENT)
+
+    @property
+    def tax_amount(self):
+        return (self.price_net / 100 * self.tax_percent).quantize(Decimal(".01"), rounding=ROUND_HALF_UP)
+
+    @property
+    def price(self):
+        return self.price_net + self.tax_amount
     # todo: implement method to get quota of remaining tickets of this type
 
 

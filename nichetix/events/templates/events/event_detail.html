@@ -24,6 +24,18 @@
                     <h3>{{ ticket_type.name }}</h3>
                     <p>{{ ticket_type.description_long }}</p>
                     <p>Price: {{ ticket_type.price }}</p>
+                    <form action="{% url "cart:add" ticket_type_id=ticket_type.id %}" method="POST">
+                        {% csrf_token %}
+                        <input type="hidden" name="redirect_url" value="{{ request.path }}">
+                        <p>REMINDER: SET INPUT MAX TO AMOUNT OF TICKETS LEFT</p>
+                        <label for="id_qty_{{ ticket_type.id }}">Quantity:</label>
+                        <input type="number"
+                               data-ticket_type_id="{{ ticket_type.id }}"
+                               id="id_qty_{{ ticket_type.id }}"
+                               name="quantity" value="1" min="1"
+                               max="10"/>
+                        <input type="submit" value="Add to Cart">
+                    </form>
                 </div>
             {% endfor %}
         {% endif %}

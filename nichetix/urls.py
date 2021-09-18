@@ -21,5 +21,6 @@ urlpatterns = [
     path("accounts/", include("allauth.urls"), name="accounts"),
     path("users/", include("nichetix.users.urls"), name="users"),
     path("tickets/", include("nichetix.tickets.urls"), name="tickets"),
+    path("cart/", include("nichetix.cart.urls"), name="cart"),
     path("", include("nichetix.events.urls"), name="events"),
 ]

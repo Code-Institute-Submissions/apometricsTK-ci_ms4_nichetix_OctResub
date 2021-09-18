@@ -65,6 +65,7 @@ INSTALLED_APPS = [
     "nichetix.users",
     "nichetix.events",
     "nichetix.tickets",
+    "nichetix.cart",
 ]
 
 
@@ -94,6 +95,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',  # allauth required
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                # own context processors
+                "nichetix.cart.context_processors.cart_contents",
             ],
         },
     },

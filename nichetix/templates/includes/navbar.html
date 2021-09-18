@@ -35,5 +35,15 @@
                 <a href="{% url "events:locations" %}">Manage my Locations</a>
             </li>
         {% endif %}
+
+        <li>
+            <a href="{% url "cart:content" %}">
+                {% if ticket_count > 0 %}
+                    Shopping Cart
+                {% else %}
+                    Shopping Cart(empty)
+                {% endif %}
+            </a>
+        </li>
     </ul>
 </nav>

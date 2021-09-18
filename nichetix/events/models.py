@@ -3,10 +3,12 @@ from django.db import models
 from autoslug import AutoSlugField
 from django_countries.fields import CountryField
 
-# todo: handle ProtectedError on Location.owner, Event.host, Event.location
+# todo: handle ProtectedError on Location.owner, Event.host, Event.location -> just mark as inactive
 # todo: implement deleted, active/inactive marker
 # todo: implement review process
 # todo: urls doesnt change vs upd title on Event.slug
+
+# todo: base class "mark as deleted" // meta class (proxy model!) Abstract model! inherit other models
 
 
 class Location(models.Model):

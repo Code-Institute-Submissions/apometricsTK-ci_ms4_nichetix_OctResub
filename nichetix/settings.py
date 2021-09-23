@@ -39,11 +39,16 @@ CSRF_COOKIE_HTTPONLY = True
 CSRF_COOKIE_SECURE = "DEVELOPMENT" not in os.environ
 SECURE_BROWSER_XSS_FILTER = True
 
-ALLOWED_HOSTS = [
-    "localhost",
-    "127.0.0.1",
-]
-
+if "DEVELOPMENT" in os.environ:
+    ALLOWED_HOSTS = [
+        "http://localhost:8000",
+        "localhost",
+        "127.0.0.1",
+    ]
+else:
+    ALLOWED_HOSTS = [
+        # todo: add heroku domain here
+    ]
 
 # Application definition
 
@@ -63,9 +68,11 @@ INSTALLED_APPS = [
     "crispy_bootstrap5",
     # own apps
     "nichetix.users",
+    "nichetix.core",
     "nichetix.events",
     "nichetix.tickets",
     "nichetix.cart",
+    "nichetix.checkout",
 ]
 
 
@@ -201,3 +208,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 BASE_PERCENT = 19.0
 CUT_PERCENT = 7.0
 ZERO_PERCENT = 0.0
+
+# Stripe
+STRIPE_CURRENCY = 'eur'
+STRIPE_PUBLIC_KEY = os.getenv('STRIPE_PUBLIC_KEY', '')
+STRIPE_SECRET_KEY = os.getenv('STRIPE_SECRET_KEY', '')
+STRIPE_WH_SECRET = os.getenv('STRIPE_WH_SECRET', '')

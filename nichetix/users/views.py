@@ -20,13 +20,15 @@ class UserDetailView(LoginRequiredMixin, DetailView):
 class UserUpdateView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
     fields = [
         "company_name",
-        "default_phone_number",
+        "default_full_name",
         "default_street_address1",
         "default_street_address2",
+        "default_postcode",
         "default_town_or_city",
         "default_county",
-        "default_postcode",
         "default_country",
+        "default_email",
+        "default_phone_number",
         ]
     # email? allauth version?
     model = User

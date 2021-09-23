@@ -14,6 +14,7 @@ from django.shortcuts import redirect, get_object_or_404, reverse
 from .models import Order, OrderItem
 from .forms import OrderForm
 from nichetix.tickets.models import TicketType
+from nichetix.users.forms import UserChangeForm
 
 DOMAIN = settings.ALLOWED_HOSTS[0]
 stripe.api_key = settings.STRIPE_SECRET_KEY
@@ -43,7 +44,7 @@ class CheckoutCancelView(RedirectView):
     def get_redirect_url(self, *args, **kwargs):
         messages.add_message(self.request, messages.ERROR,
                              "There was an error processing your checkout, please try again.")
-        return reverse("checkout:create")
+        return reverse("checkout:checkout")
 
 
 class CheckoutCreateView(CreateView):
@@ -81,17 +82,41 @@ class CheckoutCreateView(CreateView):
         return initial
 
     def form_valid(self, form):
+        """
+        Fetch cart from session and
+        1. Generate Order after adding user profile and cart dump
+        2. Add default data to user profile if wished
+        3. Generate OrderItem objects with it
+        4. Build stripe session with Order.order_items
+        5. Redirect to stripe checkout session
+        """
         cart = self.request.session.get("cart", {})
 
         if self.request.user.is_authenticated:
             form.instance.user_profile = self.request.user
 
-        # todo: stripe_pid implementation
-        """stripe_pid = self.request.POST.get("client_secret").split("_secret")[0]
-        form.instance.stripe_pid = stripe_pid"""
         form.instance.original_cart = json.dumps(cart)
         super().form_valid(form)
+
         order = self.object
+
+        if "save-info" in self.request.POST and self.request.user.is_authenticated:
+            user = self.request.user
+            invoice_data = {
+                "default_phone_number": order.phone_number,
+                "default_postcode": order.postcode,
+                "default_town_or_city": order.town_or_city,
+                "default_street_address1": order.street_address1,
+                "default_street_address2": order.street_address2,
+                "default_county": order.county,
+                "default_country": order.country,
+                "default_email": order.email,
+                "default_full_name": order.full_name,
+                "company_name": user.company_name,
+            }
+            user_form = UserChangeForm(invoice_data, instance=user)
+            if user_form.is_valid():
+                user_form.save()
 
         for key, value in cart.items():
             try:
@@ -137,9 +162,14 @@ class CheckoutCreateView(CreateView):
 @csrf_exempt
 def checkout_stripe_wh_view(request):
     """
+    On stripe checkout.session.completed webhook:
+    - Verify Signature
+    - Identify connected order and update with pid and status
+    - Generate the tickets
     Compare;
     https://stripe.com/docs/webhooks/signatures
     https://stripe.com/docs/api/events
+    https://stripe.com/docs/stripe-cli (local testing)
     """
     payload = request.body
     sig_header = request.META["HTTP_STRIPE_SIGNATURE"]
@@ -158,7 +188,7 @@ def checkout_stripe_wh_view(request):
         print(e)
         return HttpResponse(status=400)
 
-        # Handle the event
+    # Handle the event
     if event.type == "checkout.session.completed":
         checkout_session = event.data.object
         stripe_pid = str(checkout_session.payment_intent)
@@ -171,11 +201,8 @@ def checkout_stripe_wh_view(request):
             if stripe_payment_status == "paid":
                 order.status = stripe_payment_status
             order.save()
-            print("Saved")
             if order.status == "paid":
-                print("Is paid")
                 order.generate_tickets()
-                print("Tickets generated")
 
         except Order.DoesNotExist as e:
             print(e)

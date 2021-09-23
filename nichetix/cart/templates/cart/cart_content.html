@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 
+{% load crispy_forms_tags %}
+
 {% block extra_title %}
     Shopping Cart
 {% endblock extra_title%}
@@ -17,7 +19,7 @@
                 </p>
                 <form action="{% url "cart:update" ticket_type_id=cart_item.ticket_type_id %}" method="POST">
                     {% csrf_token %}
-                    <p>todo: SET INPUT MAX TO AMOUNT OF TICKETS LEFT</p>
+                    <p>SET INPUT MAX TO AMOUNT OF TICKETS LEFT</p>
                     <label>Quantity:
                         <input name="quantity"
                                type="number"
@@ -32,6 +34,10 @@
                     <button type="submit">Remove</button>
                 </form>
             {% endfor %}
+            <div>
+                <p>REMINDER - CART UPDATE HERE TOO!</p>
+                <a href="{% url "checkout:checkout" %}">Checkout</a>
+            </div>
         {% endif %}
     </div>
 

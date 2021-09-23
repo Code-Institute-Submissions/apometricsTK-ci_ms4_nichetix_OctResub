@@ -5,8 +5,6 @@ from django.db import models
 from django.conf import settings
 from autoslug import AutoSlugField
 
-from nichetix.events.models import Event
-
 
 class TicketType(models.Model):
     """
@@ -29,7 +27,7 @@ class TicketType(models.Model):
         (ZERO, ZERO_PERCENT),
     )
 
-    event = models.ForeignKey(Event, on_delete=models.PROTECT)
+    event = models.ForeignKey("events.Event", on_delete=models.PROTECT)
     name = models.CharField("Ticket name", max_length=100, )
     slug = AutoSlugField("Ticket type URL", unique_with="event", populate_from="name")
     description_long = models.TextField("Text Description", )
@@ -60,7 +58,12 @@ class TicketType(models.Model):
     @property
     def price(self):
         return self.price_net + self.tax_amount
+
     # todo: implement method to get quota of remaining tickets of this type
+
+    def generate_tickets(self, quantity, order_item):
+        ticket_list = [Ticket(type=self, order_item=order_item) for i in range(quantity)]
+        Ticket.objects.bulk_create(ticket_list)
 
 
 class Ticket(models.Model):
@@ -69,9 +72,9 @@ class Ticket(models.Model):
     # todo: implement ticket status active, cancelled, checked_in, ...
     """
     id = models.UUIDField("Ticket id", primary_key=True, default=uuid.uuid4, editable=False)
-    slug = AutoSlugField("Ticket URL", populate_from="id")
-    type = models.ForeignKey(TicketType, on_delete=models.PROTECT)
-    # order = models.ForeignKey(TicketType, on_delete=models.PROTECT) todo: implement order model
+    slug = AutoSlugField("Ticket URL", populate_from="uuid_as_str")
+    type = models.ForeignKey(TicketType, on_delete=models.PROTECT, related_name="tickets")
+    order_item = models.ForeignKey("checkout.OrderItem", on_delete=models.PROTECT, related_name="tickets")
     bought = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
 
@@ -79,5 +82,13 @@ class Ticket(models.Model):
         return str(self.type.name)
 
     @property
+    def uuid_as_str(self):
+        return str(self.id)
+
+    @property
     def event(self):
         return self.type.event
+
+    @property
+    def order(self):
+        return self.order_item.order

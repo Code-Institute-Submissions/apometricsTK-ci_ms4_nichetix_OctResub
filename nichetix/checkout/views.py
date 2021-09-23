@@ -1,0 +1,186 @@
+import json
+import stripe
+
+from django.conf import settings
+from django.contrib import messages
+from django.contrib.auth import get_user_model
+from django.core.mail import send_mail
+from django.http import HttpRequest, HttpResponse, JsonResponse
+from django.views.generic import DetailView, CreateView, RedirectView, TemplateView
+from django.views.decorators.http import require_POST
+from django.views.decorators.csrf import csrf_exempt
+from django.shortcuts import redirect, get_object_or_404, reverse
+
+from .models import Order, OrderItem
+from .forms import OrderForm
+from nichetix.tickets.models import TicketType
+
+DOMAIN = settings.ALLOWED_HOSTS[0]
+stripe.api_key = settings.STRIPE_SECRET_KEY
+stripe_wh_secret = settings.STRIPE_WH_SECRET
+
+User = get_user_model()
+
+
+class CheckoutOrderDetailView(DetailView):
+    """
+    View for processed orders (aborted and payed)
+    """
+    model = Order
+    slug_field = "slug"
+    template_name = "checkout/checkout_order_detail.html"
+
+
+class CheckoutSuccessView(RedirectView):
+    def get_redirect_url(self, *args, **kwargs):
+        messages.add_message(self.request, messages.SUCCESS,
+                             "Order processed successfully.")
+        order = get_object_or_404(Order, slug=self.kwargs["slug"])
+        return reverse("checkout:order", kwargs={"slug": order.slug})
+
+
+class CheckoutCancelView(RedirectView):
+    def get_redirect_url(self, *args, **kwargs):
+        messages.add_message(self.request, messages.ERROR,
+                             "There was an error processing your checkout, please try again.")
+        return reverse("checkout:create")
+
+
+class CheckoutCreateView(CreateView):
+    """
+    View to check cart and add payment details
+    """
+    model = Order
+    form_class = OrderForm
+    slug_field = "slug"
+    template_name = "checkout/checkout_create.html"
+    success_url = "overwritten_on_valid"
+
+    def get_initial(self):
+        """
+        populate user details form
+        """
+        initial = super(CheckoutCreateView, self).get_initial()
+        initial = initial.copy()
+        if self.request.user.is_authenticated:
+            try:
+                user = self.request.user
+                initial["full_name"] = user.default_full_name
+                initial["email"] = user.default_email
+                initial["phone_number"] = user.default_phone_number
+                initial["country"] = user.default_country
+                initial["postcode"] = user.default_postcode
+                initial["town_or_city"] = user.default_town_or_city
+                initial["street_address1"] = user.default_street_address1
+                initial["street_address2"] = user.default_street_address2
+                initial["county"] = user.default_county
+
+            except User.DoesNotExist:
+                initial = initial
+
+        return initial
+
+    def form_valid(self, form):
+        cart = self.request.session.get("cart", {})
+
+        if self.request.user.is_authenticated:
+            form.instance.user_profile = self.request.user
+
+        # todo: stripe_pid implementation
+        """stripe_pid = self.request.POST.get("client_secret").split("_secret")[0]
+        form.instance.stripe_pid = stripe_pid"""
+        form.instance.original_cart = json.dumps(cart)
+        super().form_valid(form)
+        order = self.object
+
+        for key, value in cart.items():
+            try:
+                item = TicketType.objects.get(id=key)
+                order_item = OrderItem(
+                    order=order,
+                    ticket_type=item,
+                    quantity=value,
+                )
+                order_item.save()
+
+            except TicketType.DoesNotExist:
+                messages.error(self.request, "There was a problem with your cart, please try again.")
+                order.delete()
+
+        DOMAIN = settings.ALLOWED_HOSTS[0]
+        stripe.api_key = settings.STRIPE_SECRET_KEY
+
+        line_items = []
+        for item in order.order_items:
+            line_items.append({
+                "name": item.ticket_type.name,
+                "amount": int(item.ticket_total*100),  # price in cents
+                "quantity": item.quantity,
+                "currency": "eur",
+            })
+
+        checkout_session = stripe.checkout.Session.create(
+            line_items=line_items,
+            payment_method_types=[
+                "card",
+            ],
+            mode="payment",
+            success_url=DOMAIN + "/checkout/success/" + order.slug,
+            cancel_url=DOMAIN + "/checkout/cancel/" + order.slug,
+            customer_email=order.email,
+            client_reference_id=order.uuid_as_str,
+        )
+
+        return redirect(checkout_session.url, code=303)
+
+
+@csrf_exempt
+def checkout_stripe_wh_view(request):
+    """
+    Compare;
+    https://stripe.com/docs/webhooks/signatures
+    https://stripe.com/docs/api/events
+    """
+    payload = request.body
+    sig_header = request.META["HTTP_STRIPE_SIGNATURE"]
+    event = None
+
+    try:
+        event = stripe.Webhook.construct_event(
+            payload=payload, sig_header=sig_header, secret=stripe_wh_secret
+        )
+    except ValueError as e:
+        # Invalid payload
+        print(e)
+        return HttpResponse(status=400)
+    except stripe.error.SignatureVerificationError as e:
+        # Invalid signature
+        print(e)
+        return HttpResponse(status=400)
+
+        # Handle the event
+    if event.type == "checkout.session.completed":
+        checkout_session = event.data.object
+        stripe_pid = str(checkout_session.payment_intent)
+        stripe_payment_status = str(checkout_session.payment_status)
+        order_uuid = str(checkout_session.client_reference_id)
+
+        try:
+            order = Order.objects.get(uuid=order_uuid)
+            order.stripe_pid = stripe_pid
+            if stripe_payment_status == "paid":
+                order.status = stripe_payment_status
+            order.save()
+            print("Saved")
+            if order.status == "paid":
+                print("Is paid")
+                order.generate_tickets()
+                print("Tickets generated")
+
+        except Order.DoesNotExist as e:
+            print(e)
+
+    else:
+        print("Unhandled event type {}".format(event.type))
+
+    return HttpResponse(status=200)

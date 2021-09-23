@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+{% load crispy_forms_tags %}
+{% load cart_tools %}
+
+{% block extra_title %}
+    Checkout
+{% endblock extra_title%}
+
+{% block extra_js %}
+    <script defer src="https://polyfill.io/v3/polyfill.min.js?version=3.52.1&features=fetch"></script>
+    <script defer src="https://js.stripe.com/v3/"></script>
+{% endblock extra_js %}
+
+{% block content %}
+
+    <h2>Order Summary ({{ ticket_count }} Tickets)</h2>
+    <div>
+        {% if ticket_count == 0 %}
+            <p>Your cart is empty - nothing to checkout here.</p>
+
+        {% else %}
+
+            <form action="{% url "checkout:checkout" %}" method="POST">
+                {% csrf_token %}
+                <fieldset>
+                    <legend>
+                        Invoice Details
+                    </legend>
+                    {% for cart_item in cart_items %}
+                        <div>
+                            <p>
+                                Name: {{ cart_item.ticket_type.name }}
+                            </p>
+                            <p>
+                                Amount: {{ cart_item.quantity }}
+                            </p>
+                            <p>
+                                Price, net (pp): {{ cart_item.ticket_type.price_net }}
+                            </p>
+                            <p>
+                                Tax (pp): {{ cart_item.ticket_type.tax_amount }}
+                            </p>
+                            <p>
+                                Price, total: {{ cart_item.ticket_type.price | calc_subtotal:cart_item.quantity }}
+                            </p>
+                        </div>
+                    {% endfor %}
+                    <div>
+                        <p>
+                            Total: € {{ total }}
+                        </p>
+                    </div>
+
+                    {{ form | crispy }}
+                </fieldset>
+
+                <div class="control-group">
+                    <div class="controls">
+                        <button type="submit" id="checkout-button">Checkout</button>
+                    </div>
+                </div>
+
+            </form>
+
+        {% endif %}
+    </div>
+
+{% endblock content %}
+
+{% block postloadjs %}
+{% endblock postloadjs %}

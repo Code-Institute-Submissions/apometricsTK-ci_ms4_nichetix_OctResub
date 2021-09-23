@@ -21,3 +21,6 @@ class User(AbstractUser):
     default_county = models.CharField("County", max_length=80, null=True, blank=True)
     default_postcode = models.CharField("Postcode", max_length=20, null=True, blank=True)
     default_country = CountryField("Country", blank_label="Country", null=True, blank=True)
+
+    default_full_name = models.CharField("Full Name", max_length=50, null=True, blank=True)
+    default_email = models.EmailField("Email", max_length=254, null=True, blank=True)

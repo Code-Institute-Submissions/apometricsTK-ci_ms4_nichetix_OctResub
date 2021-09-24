@@ -189,25 +189,31 @@ def checkout_stripe_wh_view(request):
         return HttpResponse(status=400)
 
     # Handle the event
-    if event.type == "checkout.session.completed":
-        checkout_session = event.data.object
-        stripe_pid = str(checkout_session.payment_intent)
-        stripe_payment_status = str(checkout_session.payment_status)
-        order_uuid = str(checkout_session.client_reference_id)
+    event_data = event.data.object
+    stripe_pid = str(event_data.payment_intent)
+    stripe_payment_status = str(event_data.payment_status)
+    order_uuid = str(event_data.client_reference_id)
 
-        try:
-            order = Order.objects.get(uuid=order_uuid)
-            order.stripe_pid = stripe_pid
+    try:
+        order = Order.objects.get(uuid=order_uuid)
+        order.stripe_pid = stripe_pid
+
+        if event.type == "checkout.session.completed":
             if stripe_payment_status == "paid":
                 order.status = stripe_payment_status
             order.save()
             if order.status == "paid":
                 order.generate_tickets()
 
-        except Order.DoesNotExist as e:
-            print(e)
+        elif event.type == "checkout.session.expired":
+            order.status = "abort"
+            order.save()
 
-    else:
-        print("Unhandled event type {}".format(event.type))
+        else:
+            print("Unhandled event type {}".format(event.type))
+            order.save()
+
+    except Order.DoesNotExist as e:
+        print(e)
 
     return HttpResponse(status=200)

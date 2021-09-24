@@ -1,14 +1,18 @@
-<div>
-    Message here
-</div>
-
+<!-- Customized Boutique Ado -->
 {% if messages %}
     <div>
-      <strong>Messages:</strong>
-      <ul>
-        {% for message in messages %}
-        <li>{{message}}</li>
+    {% for message in messages %}
+          {% with message.level as level %}
+            {% if level == 40 %}
+              {% include "includes/toasts/toast_error.html" %}
+            {% elif level == 30 %}
+              {% include "includes/toasts/toast_warning.html" %}
+            {% elif level == 25 %}
+              {% include "includes/toasts/toast_success.html" %}
+            {% else %}
+              {% include "includes/toasts/toast_info.html" %}
+            {% endif %}
+          {% endwith %}
         {% endfor %}
-      </ul>
     </div>
 {% endif %}

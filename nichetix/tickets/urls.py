@@ -3,6 +3,7 @@ from django.urls import path
 from .views import (TicketTypeCreateView,
                     TicketTypeDetailView,
                     TicketTypeUpdateView,
+                    TicketDetailView,
                     )
 
 app_name = "tickets"
@@ -13,4 +14,6 @@ urlpatterns = [
          name="ticket-type-update"),
     path("type/<slug:event_slug>/<slug:slug>/", TicketTypeDetailView.as_view(),
          name="ticket-type-detail"),
+    path("<slug:slug>/", TicketDetailView.as_view(),
+         name="ticket-detail"),
 ]

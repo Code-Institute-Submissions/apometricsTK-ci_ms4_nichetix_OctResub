@@ -107,6 +107,14 @@ class OrderItem(models.Model):
         return self.price_net + self.tax_amount
 
     @property
+    def event(self):
+        return self.ticket_type.event
+
+    @property
+    def event_name(self):
+        return self.ticket_type.event.title
+
+    @property
     def ticket_name(self):
         return self.ticket_type.name
 

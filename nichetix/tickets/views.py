@@ -4,7 +4,7 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django.views.generic import CreateView, DetailView, UpdateView
 from django.urls import reverse
 
-from .models import TicketType
+from .models import TicketType, Ticket
 from .forms import TicketTypeForm
 from nichetix.events.models import Event
 
@@ -62,3 +62,9 @@ class TicketTypeUpdateView(LoginRequiredMixin, UserPassesTestMixin, SuccessMessa
                     "event_slug": self.object.event.slug,
                     },
         )
+
+
+class TicketDetailView(DetailView):
+    model = Ticket
+    slug_field = "slug"
+    template_name = "tickets/ticket_detail.html"

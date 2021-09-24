@@ -7,12 +7,18 @@
 {% block content %}
 
     <h2>My Tickets</h2>
-    <ul>
-        {% for ticket in ticket_list %}
-            <li>
-                <a href="{% url "tickets:ticket-detail" ticket.slug %}">Ticket: {{ ticket.id }}</a>
-            </li>
-        {% endfor %}
-    </ul>
+    {% if ticket_list.count == 0 %}
+        <div>
+            You don't have any tickets yet.
+        </div>
+    {% else %}
+        <ul>
+            {% for ticket in ticket_list %}
+                <li>
+                    <a href="{% url "tickets:ticket-detail" ticket.slug %}">Ticket: {{ ticket.id }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
 
 {% endblock content %}

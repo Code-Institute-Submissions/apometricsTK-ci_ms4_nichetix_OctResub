@@ -7,12 +7,18 @@
 {% block content %}
 
     <h2>My Orders</h2>
-    <ul>
-        {% for order in order_list %}
-            <li>
-                <a href="{% url "checkout:order" order.slug %}">Order: {{ order.order_number}}</a>
-            </li>
-        {% endfor %}
-    </ul>
+    {% if order_list.count == 0 %}
+        <div>
+            You don't have any orders yet.
+        </div>
+    {% else %}
+        <ul>
+            {% for order in order_list %}
+                <li>
+                    <a href="{% url "checkout:order" order.slug %}">Order: {{ order.order_number}}</a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
 
 {% endblock content %}

@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block extra_title %}
+    My Tickets
+{% endblock extra_title%}
+
+{% block content %}
+
+    <h2>My Tickets</h2>
+    <ul>
+        {% for ticket in ticket_list %}
+            <li>
+                <a href="{% url "tickets:ticket-detail" ticket.slug %}">Ticket: {{ ticket.id }}</a>
+            </li>
+        {% endfor %}
+    </ul>
+
+{% endblock content %}

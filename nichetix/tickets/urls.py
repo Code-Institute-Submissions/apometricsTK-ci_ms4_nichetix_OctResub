@@ -4,6 +4,7 @@ from .views import (TicketTypeCreateView,
                     TicketTypeDetailView,
                     TicketTypeUpdateView,
                     TicketDetailView,
+                    TicketListView,
                     )
 
 app_name = "tickets"
@@ -16,4 +17,6 @@ urlpatterns = [
          name="ticket-type-detail"),
     path("<slug:slug>/", TicketDetailView.as_view(),
          name="ticket-detail"),
+    path("", TicketListView.as_view(),
+         name="tickets"),
 ]

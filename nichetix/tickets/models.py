@@ -92,3 +92,7 @@ class Ticket(models.Model):
     @property
     def order(self):
         return self.order_item.order
+
+    @property
+    def user(self):
+        return self.order_item.order.user_profile

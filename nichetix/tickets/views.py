@@ -1,7 +1,7 @@
 from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.messages.views import SuccessMessageMixin
-from django.views.generic import CreateView, DetailView, UpdateView
+from django.views.generic import CreateView, DetailView, UpdateView, ListView
 from django.urls import reverse
 
 from .models import TicketType, Ticket
@@ -68,3 +68,13 @@ class TicketDetailView(DetailView):
     model = Ticket
     slug_field = "slug"
     template_name = "tickets/ticket_detail.html"
+
+
+class TicketListView(LoginRequiredMixin, ListView):
+    model = Ticket
+    ordering = ["bought"]
+    context_object_name = "ticket_list"
+    template_name = "tickets/ticket_list.html"
+
+    def get_queryset(self):
+        return Ticket.objects.filter(order_item__order__user_profile=self.request.user)

@@ -10,6 +10,12 @@
                 <a href="{% url "users:detail" %}">Profile</a>
             </li>
             <li>
+                <a href="{% url "checkout:order-list" %}">My Orders</a>
+            </li>
+            <li>
+                <a href="{% url "tickets:tickets" %}">My Tickets</a>
+            </li>
+            <li>
                 <a href="{% url "account_logout" %}">Logout</a>
             </li>
         {% else %}

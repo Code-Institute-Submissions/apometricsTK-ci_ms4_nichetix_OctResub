@@ -4,9 +4,10 @@ import stripe
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth import get_user_model
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.mail import send_mail
 from django.http import HttpRequest, HttpResponse, JsonResponse
-from django.views.generic import DetailView, CreateView, RedirectView, TemplateView
+from django.views.generic import DetailView, CreateView, RedirectView, TemplateView, ListView
 from django.views.decorators.http import require_POST
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import redirect, get_object_or_404, reverse
@@ -30,6 +31,16 @@ class CheckoutOrderDetailView(DetailView):
     model = Order
     slug_field = "slug"
     template_name = "checkout/checkout_order_detail.html"
+
+
+class CheckoutOrderListView(LoginRequiredMixin, ListView):
+    model = Order
+    ordering = ["date"]
+    context_object_name = "order_list"
+    template_name = "checkout/checkout_order_list.html"
+
+    def get_queryset(self):
+        return Order.objects.filter(user_profile=self.request.user).exclude(status="abort")
 
 
 class CheckoutSuccessView(RedirectView):

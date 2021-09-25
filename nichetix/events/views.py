@@ -13,13 +13,22 @@ User = get_user_model()
 
 
 class EventsUpcomingListView(ListView):
+    """
+    Home View - List View of upcoming events
+    todo: refine filter: start from now on or end from now on
+    """
     model = Event
     queryset = Event.objects.filter(date_start__gte=timezone.now())
     ordering = ["date_start"]
     template_name = "events/events_upcoming.html"
 
 
-class EventsManageListView(ListView):
+class EventsManageListView(LoginRequiredMixin, ListView):
+    """
+    List View of Events hosted by a User
+    todo: handle empty list
+    todo: check if get_queryset needs a "super" call
+    """
     model = Event
     template_name = "events/events_upcoming.html"
 
@@ -29,6 +38,10 @@ class EventsManageListView(ListView):
 
 
 class EventsDetailView(DetailView):
+    """
+    Detail View of an event, added context: the ticket_types of the event
+    todo: call to TicketType necessary? maybe just via the event model?
+    """
     model = Event
     slug_field = "slug"
     template_name = "events/event_detail.html"
@@ -41,6 +54,9 @@ class EventsDetailView(DetailView):
 
 # todo: refactor Create & Update View to a single class?
 class EventsCreateView(LoginRequiredMixin, UserPassesTestMixin, SuccessMessageMixin, CreateView):
+    """
+    Create View for an Event
+    """
     model = Event
     form_class = EventForm
     template_name = "events/event_create.html"
@@ -66,6 +82,9 @@ class EventsCreateView(LoginRequiredMixin, UserPassesTestMixin, SuccessMessageMi
 
 
 class EventsUpdateView(LoginRequiredMixin, UserPassesTestMixin, SuccessMessageMixin, UpdateView):
+    """
+    Update View for an Event
+    """
     model = Event
     form_class = EventForm
     slug_field = "slug"
@@ -88,6 +107,9 @@ class EventsUpdateView(LoginRequiredMixin, UserPassesTestMixin, SuccessMessageMi
 
 
 class LocationManageListView(LoginRequiredMixin, UserPassesTestMixin, ListView):
+    """
+    List of Locations for Events of a User (each User has own Locations)
+    """
     model = Location
     ordering = ["name"]
     template_name = "events/events_locations.html"
@@ -101,12 +123,18 @@ class LocationManageListView(LoginRequiredMixin, UserPassesTestMixin, ListView):
 
 
 class LocationsDetailView(DetailView):
+    """
+    Detail View for a Location
+    """
     model = Location
     slug_field = "slug"
     template_name = "events/event_location_detail.html"
 
 
 class LocationsCreateView(LoginRequiredMixin, UserPassesTestMixin, SuccessMessageMixin, CreateView):
+    """
+    Create View for a Location linked to User
+    """
     model = Location
     form_class = LocationForm
     template_name = "events/events_location_create.html"
@@ -127,6 +155,9 @@ class LocationsCreateView(LoginRequiredMixin, UserPassesTestMixin, SuccessMessag
 
 
 class LocationsUpdateView(LoginRequiredMixin, UserPassesTestMixin, SuccessMessageMixin, UpdateView):
+    """
+    Update View for a Location
+    """
     model = Location
     form_class = LocationForm
     slug_field = "slug"

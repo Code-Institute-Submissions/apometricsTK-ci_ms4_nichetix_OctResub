@@ -12,6 +12,9 @@ User = get_user_model()
 
 
 class TicketTypeDetailView(LoginRequiredMixin, UserPassesTestMixin, DetailView):
+    """
+    Details to the ticket type for the host of the event
+    """
     model = TicketType
     slug_field = "slug"
     template_name = "tickets/ticket_type_detail.html"
@@ -22,6 +25,9 @@ class TicketTypeDetailView(LoginRequiredMixin, UserPassesTestMixin, DetailView):
 
 
 class TicketTypeCreateView(LoginRequiredMixin, UserPassesTestMixin, SuccessMessageMixin, CreateView):
+    """
+    Create a new ticket type to an event
+    """
     model = TicketType
     form_class = TicketTypeForm
     template_name = "tickets/ticket_type_create.html"
@@ -45,6 +51,9 @@ class TicketTypeCreateView(LoginRequiredMixin, UserPassesTestMixin, SuccessMessa
 
 
 class TicketTypeUpdateView(LoginRequiredMixin, UserPassesTestMixin, SuccessMessageMixin, UpdateView):
+    """
+    Update a ticket type as event host
+    """
     model = TicketType
     form_class = TicketTypeForm
     slug_field = "slug"
@@ -65,12 +74,19 @@ class TicketTypeUpdateView(LoginRequiredMixin, UserPassesTestMixin, SuccessMessa
 
 
 class TicketDetailView(DetailView):
+    """
+    Ticket Detail view
+    todo: printable template generator
+    """
     model = Ticket
     slug_field = "slug"
     template_name = "tickets/ticket_detail.html"
 
 
 class TicketListView(LoginRequiredMixin, ListView):
+    """
+    List view for tickets bought by user
+    """
     model = Ticket
     ordering = ["bought"]
     context_object_name = "ticket_list"

@@ -8,6 +8,10 @@ from autoslug import AutoSlugField
 
 
 class Order(models.Model):
+    """
+    The model for Orders
+    Order / Invoice Numbers have to be continuous, but shouldn't be guessable, therefore uuid/slugs
+    """
     class Status(models.TextChoices):
         """
         Possible additions;
@@ -47,23 +51,33 @@ class Order(models.Model):
                               null=False, blank=False, default=Status.PENDING)
 
     def __str__(self):
-        return self.order_number
+        return f"Order Number {self.order_number}"
 
     @property
     def uuid_as_str(self):
+        """
+        AutoSlugField needs string to populate_from (uuid doesn't work)
+        """
         return str(self.uuid)
 
     def save(self, *args, **kwargs):
         """
         Expand save method to generate xyz on order generation (=first save)
+        todo: use or drop
         """
         super().save(*args, **kwargs)
 
     @property
     def order_items(self):
+        """
+        get order items of the order
+        """
         return self.items.all()
 
     def generate_tickets(self):
+        """
+        generate all tickets to the order
+        """
         for item in self.order_items:
             item.generate_tickets()
 
@@ -71,7 +85,7 @@ class Order(models.Model):
 class OrderItem(models.Model):
     """
     Order items,
-    Quantity of TicketType, Separate price/tax for updating ticket type
+    Quantity of TicketType, Separate price/tax to prevent change on TicketType Updates
     """
     order = models.ForeignKey(Order, null=False, blank=False,
                               on_delete=models.PROTECT, related_name="items")
@@ -89,6 +103,7 @@ class OrderItem(models.Model):
     def save(self, *args, **kwargs):
         """
         Expand save method to set price net and tax amount on buy (=first save)
+        therefore TicketType updates after a buy doesn't affect already bought tickets
         """
         if not self.ticket_type:
             self.ticket_type = kwargs["ticket_type"]
@@ -99,30 +114,51 @@ class OrderItem(models.Model):
         super().save(*args, **kwargs)
 
     @property
-    def line_total(self):
-        return self.quantity * (self.price_net + self.tax_amount)
-
-    @property
     def ticket_total(self):
+        """
+        calculate the total price of one ticket, based on net price and tax
+        """
         return self.price_net + self.tax_amount
 
     @property
+    def line_total(self):
+        """
+        calculate the total for the OrderItem / line
+        """
+        return self.quantity * self.ticket_total
+
+    @property
     def event(self):
+        """
+        get the associated event
+        """
         return self.ticket_type.event
 
     @property
     def event_name(self):
+        """
+        get the name of the associated event
+        """
         return self.ticket_type.event.title
 
     @property
     def ticket_name(self):
+        """
+        get the name of the associated ticket type
+        """
         return self.ticket_type.name
 
     @property
     def tickets(self):
+        """
+        get associated tickets
+        """
         return self.ticket_type.tickets
 
     def generate_tickets(self):
+        """
+        test if tickets on this order-item are missing and generate them
+        """
         if self.tickets.count() < self.quantity:
             missing_tickets = self.quantity - self.tickets.count()
             self.ticket_type.generate_tickets(missing_tickets, self)

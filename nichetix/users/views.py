@@ -8,6 +8,9 @@ User = get_user_model()
 
 
 class UserDetailView(LoginRequiredMixin, DetailView):
+    """
+    User Profile Detail View
+    """
     model = User
 
     def get_object(self, **kwargs):
@@ -18,6 +21,11 @@ class UserDetailView(LoginRequiredMixin, DetailView):
 
 
 class UserUpdateView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
+    """
+    User Profile Update View
+    todo: email? allauth version?
+    todo: reverse_lazy for all success_urls possible?
+    """
     fields = [
         "company_name",
         "default_full_name",
@@ -30,9 +38,7 @@ class UserUpdateView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
         "default_email",
         "default_phone_number",
         ]
-    # email? allauth version?
     model = User
-
     success_message = "Update successful."
     success_url = reverse_lazy("users:detail")
 
@@ -44,6 +50,11 @@ class UserUpdateView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
 
 
 class UserApplicationView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
+    """
+    View to implement the ability for a user ask for host permissions,
+    Right now: The user toggles himself (!)
+    todo: Should it be this way in submission version?
+    """
     model = User
     fields = ["can_host"]
     template_name = "users/user_apply.html"

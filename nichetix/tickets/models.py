@@ -44,6 +44,9 @@ class TicketType(models.Model):
 
     @property
     def tax_percent(self):
+        """
+        get tax rate in percent
+        """
         if self.tax == self.BASE:
             return Decimal(self.BASE_PERCENT)
         elif self.tax == self.CUT:
@@ -53,15 +56,24 @@ class TicketType(models.Model):
 
     @property
     def tax_amount(self):
+        """
+        calculate tax amount
+        """
         return (self.price_net / 100 * self.tax_percent).quantize(Decimal(".01"), rounding=ROUND_HALF_UP)
 
     @property
     def price(self):
+        """
+        calculate full price
+        """
         return self.price_net + self.tax_amount
 
     # todo: implement method to get quota of remaining tickets of this type
 
     def generate_tickets(self, quantity, order_item):
+        """
+        Generate "quantity" tickets associated to "OrderItem"
+        """
         ticket_list = [Ticket(type=self, order_item=order_item) for i in range(quantity)]
         Ticket.objects.bulk_create(ticket_list)
 
@@ -83,16 +95,29 @@ class Ticket(models.Model):
 
     @property
     def uuid_as_str(self):
+        """
+        AutoSlugField needs a str, cant populate_from uuid
+        """
         return str(self.id)
 
     @property
     def event(self):
+        """
+        Get corresponding event
+        """
         return self.type.event
 
     @property
     def order(self):
+        """
+        Get corresponding order
+        """
         return self.order_item.order
 
     @property
     def user(self):
+        """
+        Get corresponding user
+        Not every order (and thereby ticket) has an associated user_profile!
+        """
         return self.order_item.order.user_profile

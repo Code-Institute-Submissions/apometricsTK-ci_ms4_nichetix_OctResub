@@ -47,7 +47,7 @@ if "DEVELOPMENT" in os.environ:
     ]
 else:
     ALLOWED_HOSTS = [
-        # todo: add heroku domain here
+        os.environ.get("DOMAIN_URL")
     ]
 
 # Application definition

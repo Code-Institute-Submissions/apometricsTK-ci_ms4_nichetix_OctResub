@@ -21,12 +21,12 @@ class TicketTypeForm(forms.ModelForm):
 
         # Custom to work with DateTimePicker, needs customized "_clean_fields(self)" beyond
         widgets = {
-            "sale_start": forms.widgets.DateTimeInput(format="%d-%m-%Y %H:%M %z",
+            "sale_start": forms.widgets.DateTimeInput(format="%d-%m-%Y %H:%M",
                                                       attrs={"type": "text",
                                                              "id": "datetimepicker-start",
                                                              "class": "datetimepicker",
                                                              }),
-            "sale_end": forms.widgets.DateTimeInput(format="%d-%m-%Y %H:%M %z",
+            "sale_end": forms.widgets.DateTimeInput(format="%d-%m-%Y %H:%M",
                                                     attrs={"type": "text",
                                                            "id": "datetimepicker-end",
                                                            "class": "datetimepicker",
@@ -50,7 +50,7 @@ class TicketTypeForm(forms.ModelForm):
 
                 # this is custom to work with DateTimePicker, compare "static/js/datetimepicker-init.js"
                 elif isinstance(field, forms.DateTimeField):
-                    value = datetime.strptime(value, "%d-%m-%Y %H:%M %z")
+                    value = datetime.strptime(value, "%d-%m-%Y %H:%M")
 
                 else:
                     value = field.clean(value)

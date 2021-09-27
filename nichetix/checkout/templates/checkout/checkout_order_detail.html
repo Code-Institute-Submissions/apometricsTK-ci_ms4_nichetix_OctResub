@@ -10,39 +10,64 @@
 {% endblock extra_js %}
 
 {% block content %}
+    <div class="card">
+        <div class="card-body">
+            <h2 class="card-title">
+                Order Details {{ object.order_number }}
+            </h2>
 
-    <h2>Order Details {{ object.order_number }}</h2>
-    <div>
-        <h3>Invoice Details</h3>
-        <p>{{ object.full_name }}</p>
-        <p>{{ object.street_address1 }}</p>
-        {% if object.street_address2 %}
-            <p>{{ object.street_address2 }}</p>
-        {% endif %}
-        <p>{{ object.postcode }} {{ object.town_or_city }}</p>
+            <h3 class="card-subtitle">Invoice Details</h3>
+            <p>{{ object.full_name }}</p>
+            <p>{{ object.street_address1 }}</p>
 
-        {% if object.county %}
-            <p>{{ object.county }}</p>
-        {% endif %}
-        <p> {{ object.country }}</p>
+            {% if object.street_address2 %}
+                <p>{{ object.street_address2 }}</p>
 
-        <p>Email: {{ object.email }}</p>
-        <p>Phone: {{ object.phone_number }}</p>
-        <p>Date: {{ object.date }}</p>
-        <p>Status: {{ object.status }}</p>
-    </div>
+            {% endif %}
+            <p>{{ object.postcode }} {{ object.town_or_city }}</p>
 
-    {% if object.status == "paid" %}
-        <h3>Tickets</h3>
-        {% for item in object.order_items.all %}
-            <h4>{{ item.event_name }}: {{ item.ticket_name }}</h4>
-                {% for ticket in item.tickets.all %}
-                    <a href="{% url "tickets:ticket-detail" ticket.slug %}">Ticket: {{ ticket.id }}</a>
-                {% endfor %}
-        {% endfor %}
-    {% endif %}
-    <div>
+            {% if object.county %}
+                <p>{{ object.county }}</p>
+            {% endif %}
+            <p> {{ object.country }}</p>
 
+            <p>Email: {{ object.email }}</p>
+            <p>Phone: {{ object.phone_number }}</p>
+            <p>Date: {{ object.date }}</p>
+            <p>Status: {{ object.status }}</p>
+
+            {% if object.status == "paid" %}
+                <h3>Tickets</h3>
+                <div>
+                    {% for item in object.order_items.all %}
+                        <h4>
+                            <a href="{% url "events:detail" item.event.slug %}">{{ item.event_name }}</a>
+                            | {{ item.ticket_name }}
+                        </h4>
+
+                        <div class="list-group">
+                            {% for ticket in item.tickets.all %}
+                                <a href="{% url "tickets:ticket-detail" ticket.slug %}"
+                                   class="list-group-item list-group-item-action">
+                                    Ticket: {{ ticket.id }}
+                                </a>
+                            {% endfor %}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div>
+                    <p>
+                        You're payment wasn't confirmed yet. If you paid just moments ago,
+                        try to reload the page.
+                    </p>
+                    <p>
+                        If you paid and you're tickets don't show up after a short time: Please contact us for support.
+                    </p>
+                </div>
+            {% endif %}
+
+        </div>
     </div>
 
 {% endblock content %}

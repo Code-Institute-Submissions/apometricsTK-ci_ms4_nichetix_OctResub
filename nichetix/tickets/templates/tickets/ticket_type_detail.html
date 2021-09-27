@@ -5,22 +5,27 @@
 {% endblock extra_title %}
 
 {% block content %}
-
-    <h2>{{ object.event.title }}</h2>
-    <h3>{{ object.name }}</h3>
-    <div>
-        <p>Description: {{ object.description_long }}</p>
-        <p>Sale start: {{ object.sale_start }}</p>
-        <p>Sale end: {{ object.sale_end }}</p>
-        <p>Quota: {{ object.quota }}</p>
-        <p>Price, net: {{ object.price_net }}</p>
-        <p>Tax: {{ object.tax_percent }} %</p>
-        <p>Tax amount: {{ object.tax_amount }}</p>
-        <p>Price: {{ object.price }}</p>
-        <a href="{% url "events:detail" object.event.slug %}">Event Details</a>
-        <a href="{% url "tickets:ticket-type-update" slug=object.slug event_slug=object.event.slug %}">
-            Update
-        </a>
+    <div class="card">
+        <div class="card-body">
+            <h2 class="card-title">{{ object.event.title }}</h2>
+            <h3 class="card-subtitle">{{ object.name }}</h3>
+            <p>Description: {{ object.description_long }}</p>
+            <p>Sale start: {{ object.sale_start }}</p>
+            <p>Sale end: {{ object.sale_end }}</p>
+            <p>Quota: {{ object.quota }}</p>
+            <p>Price, net: {{ object.price_net }}</p>
+            <p>Tax: {{ object.tax_percent }} %</p>
+            <p>Tax amount: {{ object.tax_amount }}</p>
+            <p>Price: {{ object.price }}</p>
+            <div class="card-footer">
+                <a href="{% url "events:detail" object.event.slug %}" class="btn btn-nichetix">
+                    Event Details
+                </a>
+                <a href="{% url "tickets:ticket-type-update" slug=object.slug event_slug=object.event.slug %}"
+                   class="btn btn-nichetix">
+                    Update
+                </a>
+            </div>
+        </div>
     </div>
-
 {% endblock content %}

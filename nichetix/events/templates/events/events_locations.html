@@ -7,24 +7,38 @@
 {% block content %}
 
     <h2>My Locations</h2>
-    {% for location in location_list %}
-        <div>
-            <h3>{{ location.name }}</h3>
-            <p>Name: {{ location.name }}</p>
-            <p>Google Places Id: {{ location.google_places_id }}</p>
-            <p>Street Address1: {{ location.street_address1 }}</p>
-            <p>Street Address2: {{ location.street_address2 }}</p>
-            <p>Town or City: {{ location.town_or_city }}</p>
-            <p>County: {{ location.county }}</p>
-            <p>Postcode: {{ location.postcode }}</p>
-            <p>Country: {{ location.country }}</p>
-            <p>Phone Number: {{ location.phone_number }}</p>
-            <p>Email: {{ location.email }}</p>
-            <a href="{{ location.foreign_url }}">{{ location.foreign_url }}</a>
-        </div>
-        <div>
-            <a href="{% url "events:location-update" location.slug %}">Update Location</a>
+
+    {% if location_list.count == 0 %}
+    <div>
+        You don't have any orders yet.
+    </div>
+
+    {% else %}
+
+        {% for location in location_list %}
+        <div class="card">
+            <div class="card-body">
+                <h3 class="card-title">{{ location.name }}</h3>
+                <p>Name: {{ location.name }}</p>
+                <p>Google Places Id: {{ location.google_places_id }}</p>
+                <p>Street Address1: {{ location.street_address1 }}</p>
+                <p>Street Address2: {{ location.street_address2 }}</p>
+                <p>Town or City: {{ location.town_or_city }}</p>
+                <p>County: {{ location.county }}</p>
+                <p>Postcode: {{ location.postcode }}</p>
+                <p>Country: {{ location.country }}</p>
+                <p>Phone Number: {{ location.phone_number }}</p>
+                <p>Email: {{ location.email }}</p>
+                <p>Foreign URL: <a href="{{ location.foreign_url }}">{{ location.foreign_url }}</a></p>
+                <div class="card-footer">
+                    <a href="{% url "events:location-update" location.slug %}" class="btn btn-nichetix">
+                        Update Location
+                    </a>
+                </div>
+            </div>
         </div>
     {% endfor %}
+
+    {% endif %}
 
 {% endblock content %}

@@ -16,16 +16,22 @@
 
 {% block content %}
 
-  <h2>Create Ticket Type</h2>
-    <form class="form-horizontal" method="post" action=".">
-        {% csrf_token %}
-        {{ form | crispy }}
-        <div class="control-group">
-            <div class="controls">
-                <button type="submit">Create</button>
-            </div>
+    <div class="card">
+        <div class="card-body">
+            <h2 class="card-title">Create Ticket Type</h2>
+
+            <form class="form-horizontal" method="post" action=".">
+                {% csrf_token %}
+                {{ form | crispy }}
+                <div class="card-footer">
+
+                    <button class="btn btn-nichetix" type="submit">Create</button>
+
+                </div>
+            </form>
+
         </div>
-    </form>
+    </div>
 
 {% endblock content %}
 

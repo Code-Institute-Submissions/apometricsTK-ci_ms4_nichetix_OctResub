@@ -6,26 +6,37 @@
 
 {% block content %}
 
-    <h2>{{ object.event.title }}</h2>
-    <h3>{{ object.type.name }}</h3>
-    <div>
-        <p>Ticket Id: {{ object.id }}</p>
-        <p>Bought: {{ object.bought }}</p>
+    <div class="card">
+        <div class="card-body">
+            <h2 class="card-title">{{ object.event.title }}</h2>
+            <h3 class="card-subtitle">{{ object.type.name }}</h3>
 
-        <p>Event: {{ object.event }}</p>
-        <p>Type: {{ object.type }}</p>
-        <p>Description: {{ object.type.description_long }}</p>
+            <p>Ticket Id: {{ object.id }}</p>
+            <p>Bought: {{ object.bought }}</p>
 
-        <p>Price, net: {{ object.type.price_net }}</p>
-        <p>Tax rate: {{ object.type.tax_percent }} %</p>
-        <p>Tax amount: {{ object.type.tax_amount }}</p>
-        <p>Price: {{ object.type.price }}</p>
+            <p>Event: {{ object.event }}</p>
+            <p>Type: {{ object.type }}</p>
+            <p>Description: {{ object.type.description_long }}</p>
 
-        <a href="{% url "events:detail" object.event.slug %}">Event Details</a>
-        <a href="{% url "tickets:ticket-type-detail" slug=object.type.slug event_slug=object.event.slug %}">
-            Ticket Type Details
-        </a>
-        <a href="{% url "checkout:order" object.order.slug %}">Back to Order</a>
+            <p>Price, net: {{ object.type.price_net }}</p>
+            <p>Tax rate: {{ object.type.tax_percent }} %</p>
+            <p>Tax amount: {{ object.type.tax_amount }}</p>
+            <p>Price: {{ object.type.price }}</p>
+            <div class="card-footer">
+                <a href="{% url "events:detail" object.event.slug %}" class="btn btn-nichetix">
+                    Event Details
+                </a>
+                {% if request.user == object.event.host %}
+                    <a href="{% url "tickets:ticket-type-detail" slug=object.type.slug event_slug=object.event.slug %}"
+                       class="btn btn-nichetix">
+                        Ticket Type Details
+                    </a>
+                {% endif %}
+                <a href="{% url "checkout:order" object.order.slug %}" class="btn btn-nichetix">
+                    Back to Order
+                </a>
+            </div>
+        </div>
     </div>
 
 {% endblock content %}

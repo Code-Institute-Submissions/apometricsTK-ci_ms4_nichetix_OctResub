@@ -1,0 +1,114 @@
+html {
+    scroll-behavior: smooth;
+    height: 100%;
+}
+
+body {
+    /*font-family: 'Lato', sans-serif; todo: font decision */
+    background-color: #fbfbfb;
+    display: flex;
+    min-height: 100%;
+    flex-direction: column;
+}
+
+.btn-nichetix {
+    color: #000000;
+    background-color: #9BD4D3;
+    border-color: #000000;
+    border-radius: 0;
+}
+
+.btn-nichetix:hover {
+    background-color: #82B4C4;
+}
+
+.card-footer {
+    margin-top: 0.5rem;
+    text-align: end;
+}
+
+/* Header */
+
+@media screen and (max-width: 420px) {
+    h1 {
+        font-size: 1.5rem;
+        padding: 0.5rem 0;
+    }
+}
+
+h2 {
+    font-size: 1.5rem;
+}
+
+h3 {
+    font-size: 1.2rem;
+}
+
+h4 {
+    font-size: 1rem;
+}
+
+h1, h2, h3, h4, h5 {
+
+}
+
+header {
+    margin-top:6rem;
+}
+
+/* Navbar */
+
+nav {
+    background-color: #9BD4D3;
+    opacity: 0.98;
+    position: sticky;
+    z-index: 1;
+    top: 0;
+    padding: 5px 0;
+    width: 100%;
+    box-shadow: rgba(0, 0, 0, 0.24) 0 2px 2px 0;
+}
+
+.navbar-toggler {
+    box-shadow: rgba(0, 0, 0, 0.24) 0 2px 2px 0;
+}
+
+.navbar {
+    position: fixed;
+}
+
+.navbar-brand {
+    font-size: 2rem;
+}
+
+.nav-link:hover {
+    color: #fbfbfb;
+    background-color: #82B4C4;
+    border-color: #000000;
+}
+
+/* Event cards */
+
+
+
+.card-footer {
+    background-color: #82B4C4;
+}
+
+/* forms */
+
+/* btn-file: Boutique Ado */
+.btn-file {
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-file input[type="file"] {
+    position: absolute;
+    top: 0;
+    right: 0;
+    min-width: 100%;
+    min-height: 100%;
+    opacity: 0;
+    cursor: pointer;
+}

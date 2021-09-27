@@ -88,9 +88,8 @@ class TicketListView(LoginRequiredMixin, ListView):
     List view for tickets bought by user
     """
     model = Ticket
-    ordering = ["bought"]
     context_object_name = "ticket_list"
     template_name = "tickets/ticket_list.html"
 
     def get_queryset(self):
-        return Ticket.objects.filter(order_item__order__user_profile=self.request.user)
+        return Ticket.objects.filter(order_item__order__user_profile=self.request.user).order_by("-bought")

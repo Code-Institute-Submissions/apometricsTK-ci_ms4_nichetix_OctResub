@@ -39,12 +39,11 @@ class CheckoutOrderListView(LoginRequiredMixin, ListView):
     todo: refinement (status, order via events, ...?)
     """
     model = Order
-    ordering = ["date"]
     context_object_name = "order_list"
     template_name = "checkout/checkout_order_list.html"
 
     def get_queryset(self):
-        return Order.objects.filter(user_profile=self.request.user).exclude(status="abort")
+        return Order.objects.filter(user_profile=self.request.user).exclude(status="abort").order_by("-date")
 
 
 class CheckoutSuccessView(RedirectView):
@@ -217,7 +216,7 @@ def checkout_stripe_wh_view(request):
         return HttpResponse(status=400)
 
     # Handle the event
-    event_data = event.data.object
+    event_data = event.data.object  # todo: into if/try statement
     stripe_pid = str(event_data.payment_intent)
     stripe_payment_status = str(event_data.payment_status)
     order_uuid = str(event_data.client_reference_id)

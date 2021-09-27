@@ -6,9 +6,11 @@
 
 {% block content %}
 
-    <h2>{{ object.name }}</h2>
+    <div class="card">
+        <div class="card-body">
+            <h2 class="card-title">{{ object.name }}</h2>
 
-        <div>
+
             <p>Name: {{ object.name }}</p>
             <p>Google Places Id: {{ object.google_places_id }}</p>
             <p>Street Address1: {{ object.street_address1 }}</p>
@@ -20,8 +22,12 @@
             <p>Phone Number: {{ object.phone_number }}</p>
             <p>Email: {{ object.email }}</p>
             <a href="{{ object.foreign_url }}">{{ object.foreign_url }}</a>
-
-            <a href="{% url "events:location-update" object.slug %}">Update Location</a>
+            <div class="card-footer">
+                <a href="{% url "events:location-update" object.slug %}" class="btn btn-nichetix">
+                    Update Location
+                </a>
+            </div>
         </div>
+    </div>
 
 {% endblock content %}

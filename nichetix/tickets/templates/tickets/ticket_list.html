@@ -2,23 +2,41 @@
 
 {% block extra_title %}
     My Tickets
-{% endblock extra_title%}
+{% endblock extra_title %}
 
 {% block content %}
+    <div class="card">
+        <div class="card-body">
+            <h2 class="card-title">
+                My Tickets
+            </h2>
 
-    <h2>My Tickets</h2>
-    {% if ticket_list.count == 0 %}
-        <div>
-            You don't have any tickets yet.
+            {% if ticket_list.count == 0 %}
+                <div>
+                    You don't have any tickets yet.
+                </div>
+
+            {% else %}
+                <div class="list-group">
+
+                    {% for ticket in ticket_list %}
+                        <a href="{% url "tickets:ticket-detail" ticket.slug %}"
+                           class="list-group-item list-group-item-action">
+                            {{ ticket.type.name }} |
+                            <strong>{{ ticket.event }}</strong> |
+                            {{ ticket.event.date_start }} -
+                            {{ ticket.event.date_end }}
+                        </a>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
         </div>
-    {% else %}
-        <ul>
-            {% for ticket in ticket_list %}
-                <li>
-                    <a href="{% url "tickets:ticket-detail" ticket.slug %}">Ticket: {{ ticket.id }}</a>
-                </li>
-            {% endfor %}
-        </ul>
-    {% endif %}
+        <div class="card-footer">
+            <a href="{% url "events:upcoming" %}" class="btn btn-nichetix">
+                Back to upcoming events
+            </a>
+        </div>
+    </div>
 
 {% endblock content %}

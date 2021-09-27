@@ -2,28 +2,55 @@
 
 {% block extra_title %}
     {{ object.username }}
-{% endblock extra_title%}
+{% endblock extra_title %}
 
 {% block content %}
+    <div class="card">
+        <div class="card-body">
+            <h2 class="card-title">
+                <strong>User:</strong> {{ object.username }}
+            </h2>
+            <hr>
 
-    <h2>Name: {{ object.username }}</h2>
-    {% if object.company_name %}
-        <p>Company: {{ object.company_name }}</p>
-    {% endif %}
+            {% if object.company_name %}
+                <p>
+                    <strong>Company:</strong> {{ object.company_name }}
+                </p>
+            {% endif %}
 
-    <p>Email: {{ object.email }}</p>
-    <p>Phone: {{ object.default_phone_number }} </p>
+            <p>
+                <strong>Email:</strong> {{ object.email }}
+            </p>
+            <p>
+                <strong>Phone:</strong> {{ object.default_phone_number }}
+            </p>
 
-    <p>Street Address1: {{ object.default_street_address1 }}</p>
-    <p>Street Address2: {{ object.default_street_address2 }}</p>
-    <p>City: {{ object.default_town_or_city }}</p>
-    <p>County: {{ object.default_county }}</p>
-    <p>Postcode: {{ object.default_postcode }}</p>
-    <p>Country: {{ object.default_country }}</p>
+            <p>
+                <strong>Street Address1:</strong> {{ object.default_street_address1 }}
+            </p>
+            <p>
+                <strong>Street Address2:</strong> {{ object.default_street_address2 }}
+            </p>
+            <p>
+                <strong>City:</strong> {{ object.default_town_or_city }}
+            </p>
+            <p>
+                <strong>County:</strong> {{ object.default_county }}
+            </p>
+            <p>
+                <strong>Postcode:</strong> {{ object.default_postcode }}
+            </p>
+            <p>
+                <strong>Country:</strong> {{ object.default_country }}
+            </p>
+        </div>
+        <div class="card-footer">
 
-    <a href="{% url "users:update" %}">Update profile</a>
-    <a href="{% url "account_email" %}">Manage email</a>
-    {% if not object.can_host %}
-        <a href="{% url "users:apply_host" %}">Apply to host events</a>
-    {% endif %}
+            <a href="{% url "users:update" %}" class="btn btn-nichetix">Update profile</a>
+            <a href="{% url "account_email" %}" class="btn btn-nichetix">Manage email</a>
+            {% if not object.can_host %}
+                <a href="{% url "users:apply_host" %}" class="btn btn-nichetix">Apply to host events</a>
+            {% endif %}
+        </div>
+    </div>
 {% endblock content %}

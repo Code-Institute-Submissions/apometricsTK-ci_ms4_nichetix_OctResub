@@ -15,7 +15,13 @@
         <p>Host: {{ object.description_host }}</p>
         <p>Description: {{ object.description_long }}</p>
         <p>Event url: {{ object.foreign_url }}</p>
-        <p>Image: {{ object.image }}</p>
+        <p>Image:
+            {% if event.image %}
+            <img src="{{ event.image.url }}" alt="{{ event.title }}">
+        {% else %}
+            None
+        {% endif %}
+        </p>
         <p>Image URL: {{ object.image_url }}</p>
 
         {% if request.user.id != object.host_id %}

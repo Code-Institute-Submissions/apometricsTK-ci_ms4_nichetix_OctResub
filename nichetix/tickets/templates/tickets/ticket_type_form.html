@@ -15,17 +15,20 @@
 {% endblock extra_title %}
 
 {% block content %}
+    <div class="card">
+        <div class="card-body">
+            <h2 class="card-title">Update Ticket Type</h2>
 
-  <h2>Update Ticket Type</h2>
-    <form class="form-horizontal" method="post" action=".">
-        {% csrf_token %}
-        {{ form | crispy }}
-        <div class="control-group">
-            <div class="controls">
-                <button type="submit">Update</button>
-            </div>
+            <form class="form-horizontal" method="post" action=".">
+                {% csrf_token %}
+                {{ form | crispy }}
+                <div class="card-footer">
+                    <button class="btn btn-nichetix" type="submit">Update</button>
+                </div>
+            </form>
+
         </div>
-    </form>
+    </div>
 
 {% endblock content %}
 

@@ -7,17 +7,30 @@
 {% endblock extra_title %}
 
 {% block content %}
-  <h2>Username: {{ user.username }}</h2>
-    <div>
-        Some real-life application process has to be implemented here.
-    </div>
-    <form class="form-horizontal" method="post" action="{% url 'users:apply_host' %}">
-        {% csrf_token %}
-        {{ form | crispy }}
-        <div class="control-group">
-            <div class="controls">
-                <button type="submit">Apply</button>
+    <div class="card">
+        <div class="card-body">
+            <h2 class="card-title">
+                Username: {{ user.username }}
+            </h2>
+            <div>
+                <p>
+                    Some real-life application process with clearance and enabling by the platform has to be
+                    implemented here.
+                </p>
+                <p>
+                    Toggle as user for admission purposes.
+                </p>
             </div>
+            <form class="form-horizontal" method="post" action="{% url 'users:apply_host' %}">
+                {% csrf_token %}
+                {{ form | crispy }}
+                <div class="card-footer">
+                    <a href="{% url "users:detail" %}" class="btn btn-nichetix">
+                        Back
+                    </a>
+                    <button type="submit" class="btn btn-nichetix">Apply</button>
+                </div>
+            </form>
         </div>
-    </form>
+    </div>
 {% endblock content %}

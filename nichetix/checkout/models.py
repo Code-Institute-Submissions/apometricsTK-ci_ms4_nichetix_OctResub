@@ -63,7 +63,7 @@ class Order(models.Model):
     def save(self, *args, **kwargs):
         """
         Expand save method to generate xyz on order generation (=first save)
-        todo: use or drop
+        todo: populate order_total
         """
         super().save(*args, **kwargs)
 

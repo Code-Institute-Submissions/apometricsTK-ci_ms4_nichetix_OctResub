@@ -14,8 +14,12 @@
 
 {% block content %}
 
-    <h2>Order Summary ({{ ticket_count }} Tickets)</h2>
-    <div>
+    <div class="card">
+        <div class="card-body">
+            <h2 class="card-title">
+                Order Summary ({{ ticket_count }} Tickets)
+            </h2>
+
         {% if ticket_count == 0 %}
             <p>Your cart is empty - nothing to checkout here.</p>
 
@@ -75,15 +79,15 @@
                     </div>
                 </fieldset>
 
-                <div class="control-group">
-                    <div class="controls">
-                        <button type="submit" id="checkout-button">Checkout</button>
+                    <div class="card-footer text-center">
+                        <button type="submit" id="checkout-button" class="btn btn-lg btn-nichetix">
+                                Checkout
+                        </button>
                     </div>
-                </div>
-
             </form>
 
         {% endif %}
+    </div>
     </div>
 
 {% endblock content %}

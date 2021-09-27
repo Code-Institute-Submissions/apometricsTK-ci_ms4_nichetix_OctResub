@@ -6,19 +6,37 @@
 
 {% block content %}
 
-    <h2>My Orders</h2>
-    {% if order_list.count == 0 %}
-        <div>
-            You don't have any orders yet.
+    <div class="card">
+        <div class="card-body">
+            <h2 class="card-title">
+                My Orders
+            </h2>
+
+            {% if order_list.count == 0 %}
+                <div>
+                    You don't have any orders yet.
+                </div>
+
+            {% else %}
+                <div class="list-group">
+
+                    {% for order in order_list %}
+                        <a href="{% url "checkout:order" order.slug %}"
+                           class="list-group-item list-group-item-action">
+                            Order: {{ order.order_number }}
+                            From: {{ order.date }}
+                            Total: {{ order.order_total }}
+                        </a>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
         </div>
-    {% else %}
-        <ul>
-            {% for order in order_list %}
-                <li>
-                    <a href="{% url "checkout:order" order.slug %}">Order: {{ order.order_number}}</a>
-                </li>
-            {% endfor %}
-        </ul>
-    {% endif %}
+        <div class="card-footer">
+            <a href="{% url "events:upcoming" %}" class="btn btn-nichetix">
+                Back to upcoming events
+            </a>
+        </div>
+    </div>
 
 {% endblock content %}

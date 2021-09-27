@@ -103,9 +103,14 @@ TEMPLATES = [
                 'django.template.context_processors.request',  # allauth required
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.media',
                 # own context processors
                 "nichetix.cart.context_processors.cart_contents",
             ],
+            'builtins': [
+                'crispy_forms.templatetags.crispy_forms_tags',
+                'crispy_forms.templatetags.crispy_forms_field',
+            ]
         },
     },
 ]
@@ -198,11 +203,11 @@ USE_TZ = True
 
 STATIC_URL = "/static/"
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "static"),
+    os.path.join(BASE_DIR, "nichetix", "static"),
 ]
 
 MEDIA_URL = "/media/"
-MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+MEDIA_ROOT = os.path.join(BASE_DIR, "nichetix", "media")
 
 # S3 Access
 if "USE_AWS" in os.environ:

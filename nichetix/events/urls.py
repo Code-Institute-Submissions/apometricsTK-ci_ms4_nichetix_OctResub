@@ -22,6 +22,6 @@ urlpatterns = [
     path("locations/<slug:slug>", LocationsDetailView.as_view(), name="location-detail"),
     path("locations/<slug:slug>/update/", LocationsUpdateView.as_view(), name="location-update"),
 
-    path("<slug:slug>/", EventsDetailView.as_view(), name="detail"),
-    path("<slug:slug>/update/", EventsUpdateView.as_view(), name="update"),
+    path("events/<slug:slug>/", EventsDetailView.as_view(), name="detail"),
+    path("events/<slug:slug>/update/", EventsUpdateView.as_view(), name="update"),
 ]

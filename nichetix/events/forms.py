@@ -1,6 +1,7 @@
 from django import forms
 
 from .models import Event, Location
+from .widgets import CustomClearableFileInput
 
 
 class EventForm(forms.ModelForm):
@@ -23,6 +24,8 @@ class EventForm(forms.ModelForm):
             "date_start": forms.widgets.DateTimeInput(attrs={"type": "datetime-local"}),
             "date_end": forms.widgets.DateTimeInput(attrs={"type": "datetime-local"}),
         }
+
+    image = forms.ImageField(label="Image", required=False, widget=CustomClearableFileInput)
 
     def __init__(self, user, *args, **kwargs):
         super(EventForm, self).__init__(*args, **kwargs)

@@ -28,14 +28,17 @@ class EventForm(forms.ModelForm):
 
         # Custom to work with DateTimePicker, needs customized "_clean_fields(self)" beyond
         widgets = {
-            "date_start": forms.widgets.TextInput(attrs={"type": "text",
+            "date_start": forms.widgets.DateTimeInput(format="%d-%m-%Y %H:%M %z",
+                                                      attrs={"type": "text",
                                                              "id": "datetimepicker-start",
                                                              "class": "datetimepicker",
                                                              }),
-            "date_end": forms.widgets.TextInput(attrs={"type": "text",
-                                                             "id": "datetimepicker-end",
-                                                             "class": "datetimepicker",
-                                                             }),
+            "date_end": forms.widgets.DateTimeInput(format="%d-%m-%Y %H:%M %z",
+                                                    attrs={"type": "text",
+                                                           "id": "datetimepicker-end",
+                                                           "class": "datetimepicker",
+                                                           }),
+
         }
 
     image = forms.ImageField(label="Image", required=False, widget=CustomClearableFileInput)

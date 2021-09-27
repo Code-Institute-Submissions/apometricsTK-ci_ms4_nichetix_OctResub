@@ -1,22 +1,49 @@
 {% extends "base.html" %}
 
-{% load crispy_forms_tags %}
+{% block extra_css %}
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.min.css" integrity="sha512-f0tzWhCwVFS3WeYaofoLWkTP62ObhewQ1EZn65oSYDZUg1+CyywGKkWzm8BxaJj5HGKI72PnMH9jYyIFz+GH7g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+{% endblock extra_css %}
+
+{% block extra_js %}
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js" integrity="sha512-AIOTidJAcHBH2G/oZv9viEGXRqDNmfdPVPYOYKGy3fti0xIplnlgMHUGfuNRzC6FkzIo0iIxgFnr9RikFxK+sw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+{% endblock extra_js %}
 
 {% block extra_title %}
     Create Event
 {% endblock extra_title %}
 
 {% block content %}
+    <div class="card">
+        <div class="card-body">
+            <h2 class="card-title">Create Event</h2>
 
-  <h2>Create Event</h2>
-    <form class="form-horizontal" method="post" action="{% url "events:create" %}">
-        {% csrf_token %}
-        {{ form | crispy }}
-        <div class="control-group">
-            <div class="controls">
-                <button type="submit">Create</button>
-            </div>
+            <form class="form-horizontal" method="post" action="{% url "events:create" %}"
+                  enctype="multipart/form-data">
+                {% csrf_token %}
+
+                {% for field in form %}
+                    {% if field.name != "image" %}
+                        {{ field | as_crispy_field }}
+                    {% else %}
+                        {{ field }}
+                    {% endif %}
+                {% endfor %}
+
+                <div class="card-footer">
+                    <a href="{% url "events:manage" %}" class="btn btn-nichetix">
+                        Back
+                    </a>
+                    <button type="submit" class="btn btn-nichetix">
+                        Create
+                    </button>
+                </div>
+            </form>
         </div>
-    </form>
-
+    </div>
 {% endblock content %}
+
+{% block postloadjs %}
+    {{ block.super }}
+    <script src="{% static "js/filename-upload.js" %}"type="text/javascript"></script>
+    <script src="{% static "js/datetimepicker-init.js" %}" type="text/javascript"></script>
+{% endblock postloadjs %}

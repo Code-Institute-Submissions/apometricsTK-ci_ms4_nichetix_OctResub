@@ -78,21 +78,21 @@ class Order(models.Model):
         """
         get order total, net
         """
-        return self.items.aggregate(models.Sum("price_net"))["price_net__sum"]
+        return self.items.aggregate(models.Sum("price_net"))["price_net__sum"] or 0
 
     @property
     def order_sum_tax(self):
         """
         get order tax
         """
-        return self.items.aggregate(models.Sum("tax_amount"))["tax_amount__sum"]
+        return self.items.aggregate(models.Sum("tax_amount"))["tax_amount__sum"] or 0
 
     @property
     def order_total(self):
         """
         get order total
         """
-        return self.order_sum_net + self.order_sum_tax
+        return self.order_sum_tax + self.order_sum_net
 
     def generate_tickets(self):
         """

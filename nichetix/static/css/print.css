@@ -1,0 +1,16 @@
+@page {
+  margin: 3cm;
+}
+@media print {
+  nav,
+  header,
+  footer,
+  button {
+    display: none !important;
+  }
+
+  body {
+    color: #000000;
+    background-color: #ffffff;
+  }
+}

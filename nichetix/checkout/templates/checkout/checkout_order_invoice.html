@@ -1,0 +1,121 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% load crispy_forms_tags %}
+{% load cart_tools %}
+
+{% block extra_meta %}
+{% endblock extra_meta %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static "/checkout/css/checkout_invoice.css" %}"/>
+    <link rel="stylesheet" href="{% static "/css/print.css" %}"/>
+
+{% endblock extra_css %}
+
+{% block extra_js %}
+{% endblock extra_js %}
+
+{% block extra_title %}
+    Invoice - Order no {{ object.order_number }}
+{% endblock extra_title%}
+
+{% block content %}
+
+<section id="invoice">
+    {# Heavily customized https://github.com/CourtBouillon/weasyprint-samples/blob/master/invoice/invoice.html #}
+    <h2>Invoice</h2>
+
+    <aside>
+        <address id="from">
+            <strong>From</strong> <br>
+            Nichetix Events & Tickets <br>
+            Hauptstr. 123 <br>
+            12345 Hauptstadt <br>
+            Germany <br>
+        </address>
+
+        <address id="to">
+            <strong>To</strong> <br>
+            {{ object.full_name }} <br>
+            {{ object.street_address1 }} <br>
+            {% if object.street_address2 %}
+                {{ object.street_address2 }} <br>
+            {% endif %}
+            {{ object.postcode }} {{ object.town_or_city }} <br>
+            {% if object.county %} {
+                { object.county }} <br>
+            {% endif %}
+            {{ object.country.name }} <br>
+        </address>
+    </aside>
+
+    <dl id="invoice-data">
+        <dt>Invoice number</dt>
+        <dd>{{ object.order_number }}</dd>
+        <dt>Date</dt>
+        <dd>{{ object.status_change_date }}</dd>
+        <dt>Status</dt>
+        <dd><strong>{{ object.status.upper }}</strong></dd>
+    </dl>
+
+    <table id="items">
+        <thead>
+        <tr>
+            <th>Ticket Name</th>
+            <th>Event</th>
+            <th>Price (pp)</th>
+            <th>Tax (pp)</th>
+            <th>Quantity</th>
+            <th>Subtotal</th>
+        </tr>
+        </thead>
+
+        <tbody>
+
+        {% for item in order.order_items %}
+            <tr>
+                <td>{{ item.ticket_name }}</td>
+                <td>{{ item.event_name }}</td>
+                <td>{{ item.price_net }} €</td>
+                <td>{{ item.tax_amount }} €</td>
+                <td>{{ item.quantity }}</td>
+                <td>{{ item.line_total }} €</td>
+            </tr>
+        {% endfor %}
+
+        </tbody>
+    </table>
+
+    <table id="total">
+        <thead>
+        <tr>
+            <th>Due by</th>
+            <th>Sum net</th>
+            <th>Sum tax</th>
+            <th>Total</th>
+            <th>Status</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>{{ object.status_change_date }}</td>
+            <td>{{ object.order_sum_net }} €</td>
+            <td>{{ object.order_sum_tax }} €</td>
+            <td>{{ object.order_total }} €</td>
+            <td><strong>{{ object.status.upper }}</strong></td>
+        </tr>
+        </tbody>
+    </table>
+
+    <aside id="invoice-footer">
+        Nichetix Events & Tickets | Hauptstr. 123 | 12345 Hauptstadt | Germany | phone: +49 1234 567890 | mail: accounting@nichetix.de
+        Capital Bank | Hauptstr. 1 | 12345 Hauptstadt | Germany | IBAN: DE12 3456 7890 1234 5678 90 | BIC: CAPIDEHS001
+    </aside>
+</section>
+
+{% endblock content %}
+
+{% block postloadjs %}
+{% endblock postloadjs %}

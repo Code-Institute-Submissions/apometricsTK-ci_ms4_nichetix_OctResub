@@ -26,17 +26,26 @@ User = get_user_model()
 class CheckoutOrderDetailView(DetailView):
     """
     View for a generated order (pending, paid or abort)
-    todo: printable invoice generator
     """
     model = Order
     slug_field = "slug"
     template_name = "checkout/checkout_order_detail.html"
 
 
+class CheckoutInvoiceDetailView(DetailView):
+    """
+    View for Invoices of paid orders
+    defined queryset to prevent invoice view for not paid orders
+    """
+    model = Order
+    slug_field = "slug"
+    template_name = "checkout/checkout_order_invoice.html"
+    queryset = Order.objects.filter(status="paid")
+
+
 class CheckoutOrderListView(LoginRequiredMixin, ListView):
     """
     View for all pending and paid orders of a user
-    todo: refinement (status, order via events, ...?)
     """
     model = Order
     context_object_name = "order_list"

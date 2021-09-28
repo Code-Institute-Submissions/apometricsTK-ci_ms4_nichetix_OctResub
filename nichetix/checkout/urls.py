@@ -6,11 +6,13 @@ from .views import (CheckoutOrderDetailView,
                     CheckoutSuccessView,
                     CheckoutCancelView,
                     checkout_stripe_wh_view,
+                    CheckoutInvoiceDetailView,
                     )
 
 app_name = "checkout"
 urlpatterns = [
     path("wh/", checkout_stripe_wh_view, name="webhook"),
+    path("order/<slug:slug>/invoice", CheckoutInvoiceDetailView.as_view(), name="invoice"),
     path("order/<slug:slug>/", CheckoutOrderDetailView.as_view(), name="order"),
     path("order/", CheckoutOrderListView.as_view(), name="order-list"),
     path("success/<slug:slug>", CheckoutSuccessView.as_view(), name="success"),

@@ -55,6 +55,11 @@
                         </div>
                     {% endfor %}
                 </div>
+                <div class="card-footer">
+                    <a href="{% url "checkout:invoice" object.slug %}" class="btn btn-nichetix">
+                        Invoice
+                    </a>
+                </div>
             {% else %}
                 <div>
                     <p>

@@ -76,11 +76,19 @@ class TicketTypeUpdateView(LoginRequiredMixin, UserPassesTestMixin, SuccessMessa
 class TicketDetailView(DetailView):
     """
     Ticket Detail view
-    todo: printable template generator
     """
     model = Ticket
     slug_field = "slug"
     template_name = "tickets/ticket_detail.html"
+
+
+class TicketPrintView(DetailView):
+    """
+    Ticket Print view
+    """
+    model = Ticket
+    slug_field = "slug"
+    template_name = "tickets/ticket_print.html"
 
 
 class TicketListView(LoginRequiredMixin, ListView):

@@ -23,6 +23,9 @@
             <p>Tax amount: {{ object.type.tax_amount }}</p>
             <p>Price: {{ object.type.price }}</p>
             <div class="card-footer">
+                <a href="{% url "tickets:ticket-print" object.slug %}" class="btn btn-nichetix">
+                    Printable
+                </a>
                 <a href="{% url "events:detail" object.event.slug %}" class="btn btn-nichetix">
                     Event Details
                 </a>

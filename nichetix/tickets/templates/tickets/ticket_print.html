@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% load crispy_forms_tags %}
+{% load cart_tools %}
+
+{% block extra_meta %}
+{% endblock extra_meta %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static "/tickets/css/tickets_ticket.css" %}"/>
+    <link rel="stylesheet" href="{% static "/css/print.css" %}"/>
+{% endblock extra_css %}
+
+{% block extra_js %}
+{% endblock extra_js %}
+
+{% block extra_title %}
+    Invoice - Order no {{ object.order_number }}
+{% endblock extra_title%}
+
+{% block content %}
+
+<section id="invoice">
+    {# customized https://github.com/CourtBouillon/weasyprint-samples/blob/master/ticket/ticket.html #}
+    <h2>Ticket - <strong>{{ object.type.name }}</strong></h2>
+
+    <dl id="event">
+        <dt>
+            <small>Event</small>
+        </dt>
+        <dd><strong>{{ object.event.title }}</strong></dd>
+        <dt>
+            <small>Description</small>
+        </dt>
+        <dd>{{ object.event.description_short }}</dd>
+        <dt><small>Time</small></dt>
+        <dd>{{ object.event.date_start }} - {{ object.event.date_end }}</dd>
+    </dl>
+
+    <dl id="ticket">
+        <dt>
+            <small>Ticket id</small>
+        </dt>
+        <dd>{{ object.id }}</dd>
+        <dt>
+            <small>Date</small>
+        </dt>
+        <dd>{{ object.bought }}</dd>
+    </dl>
+
+    <address id="location">
+        <small>Location</small> <br>
+        {{ object.event.location.name }} <br>
+        {% if object.event.location.street_address1 %}
+            {{ object.event.location.street_address1 }} <br>
+        {% endif %}
+        {% if object.event.location.street_address2 %}
+            {{ object.event.location.street_address2 }} <br>
+        {% endif %}
+        {% if object.event.location.postcode %}
+            {{ object.event.location.postcode }}
+        {% endif %}
+        {% if object.event.location.town_or_city %}
+            {{ object.event.location.town_or_city }} <br>
+        {% endif %}
+        {% if object.event.location.county %}
+            {{ object.event.location.county }} <br>
+        {% endif %}
+        {% if object.event.location.country %}
+            {{ object.event.location.country.name }} <br>
+        {% endif %}
+        {% if object.event.location.phone_number %}
+            {{ object.event.location.phone_number }} <br>
+        {% endif %}
+    </address>
+
+
+
+
+
+    <aside id="ticket-footer">
+        Nichetix Events & Tickets | Hauptstr. 123 | 12345 Hauptstadt | Germany | phone: +49 1234 567890 | mail: accounting@nichetix.de
+    </aside>
+</section>
+
+{% endblock content %}
+
+{% block postloadjs %}
+{% endblock postloadjs %}

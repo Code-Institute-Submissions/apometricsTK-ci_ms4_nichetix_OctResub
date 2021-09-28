@@ -10,8 +10,7 @@
 
 {% block extra_css %}
     <link rel="stylesheet" href="{% static "/checkout/css/checkout_invoice.css" %}"/>
-    <link rel="stylesheet" href="{% static "/css/print.css" %}"/>
-
+    <link rel="stylesheet" href="{% static "/tickets/css/print.css" %}"/>
 {% endblock extra_css %}
 
 {% block extra_js %}
@@ -24,7 +23,7 @@
 {% block content %}
 
 <section id="invoice">
-    {# Heavily customized https://github.com/CourtBouillon/weasyprint-samples/blob/master/invoice/invoice.html #}
+    {# customized https://github.com/CourtBouillon/weasyprint-samples/blob/master/invoice/invoice.html #}
     <h2>Invoice</h2>
 
     <aside>

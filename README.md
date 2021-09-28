@@ -31,35 +31,30 @@ niche-platform for their interests.
 
 ### Strategy & Scope
 
+A selection of the major objectives and selected ways to achieve them in form of user stories and conclusions.
+
+As a…
+
 #### Host of events...
-- have a platform for my specific customers (e.g. a regional/local or special-interest customer group)
 
-- open events with information
-- provide location information to my guests
+1. I want to sell tickets.
+2. I want to present my events and services to a group with high conversion, preferably with interest in my niche
+   (regional, thematic, ...)
+3. I want to provide fundamental information (description, location, ...) to my potential customers.
+4. I want to sell different tickets for events (e.g. early-bird, VIP, sales...)
+5. I want to advertise for free events (e.g. open days, village fair, ...)
+6. I want my 
 
-- sell tickets
-- define different ticket types 
-   - prices, discounted, slotted...
+#### Guest or Customer with a niche interest...
 
-- check in guests
-- open a communication channel to guests, if information changes
-- monitor my sales
-
-- MENTION WHY ITS OKAY TO HAVE A EVENT WITHOUT TICKETS (e.g. advertising for a fair with free entry)
-- MENTION WHY EVENTS AND LOCATION IN SAME APP (an event without a location is not useful for hosts and guests)
-
-#### Buyer of tickets...
-- have a platform for my specific customers (e.g. a regional/local or special-interest customer group)
-
-- buy tickets
-- find events
-- research on events
-- logged-in: store and present tickets
+1. I want to buy tickets / request a service.
+2. I want to find interesting events and services in my field of interest.
+3. I want to research on these (dates, location, description, ...).
+4. I want an easy way to store and present my tickets.
 
 #### Niche ticket provider...
-- sell tickets
-- monitor sales
-- get a share for providing the platform
+
+1. I want to connect two groups and benefit from sales made by the connection.
 
 ### Structure & Skeleton
 
@@ -78,9 +73,17 @@ niche-platform for their interests.
 ### Existing Features
 
 ### Features left to Implement
+
+#### Monitoring
 - add more stripe webhook events
-- review events to prevent misuse 
+- review events to prevent misuse
+- sale and checkin dashboards
+
+#### Ease of real-world processes
 - multi-party-payments with stripe
+- check in quests
+- communicate with guests (if they consent)
+- implement host-application process
 
 ---
 
@@ -138,6 +141,13 @@ niche-platform for their interests.
 #### [JavaScript](https://en.wikipedia.org/wiki/JavaScript)
 - for FrontEnd logic
 
+##### [jQuery](https://jquery.com/)
+- for UI tweaks
+
+##### [jQuery DateTimePicker](https://github.com/xdan/datetimepicker)
+- for DateTimeField inputs with same experience on every browser
+  - compare: [comment in Commit-Message from development](https://github.com/apometricsTK/ci_ms4_nichetix/commit/18cdc8537a44f87fb51c0e734c23fa90e7a65eaa#diff-c7d995d00d9fda9a866dc2ef1ceca4eb61978120d23fcfba126afa8aabf52d7cL36-L58)
+
 #### [Git](https://git-scm.com/) / [GitHub](https://github.com)
 - for version control
 - as source for deployment
@@ -162,6 +172,10 @@ niche-platform for their interests.
 ## Testing
 
 ### Bugs while developing
+
+#### Formsets with disabled fields
+
+#### Datetimepicker timezone
 
 ### Validators
 
@@ -209,30 +223,6 @@ Deployment on local and via Heroku (with Herokus PostgresDB and AWS S3 Bucket) c
     - requirements.txt (for "virtual environment" step below)
     - run.py
 - Create **env.py** file in the directory, open it and provide following parameters
-  - A way to generate a **SECRET_KEY** is [RandomKeygen](https://randomkeygen.com/)
-  - Obtaining your Database URL is covered [here]()
-    - It follows the schema ```postgres://USER:PASSWORD@localhost:PORT/DB_NAME```
-  - How to get your Email host user and password with the example gmail is covered
-  [here](https://dev.to/abderrahmanemustapha/how-to-send-email-with-django-and-gmail-in-production-the-right-way-24ab)
-  (start reading at "The Gmail part")
-  - Getting a Stripe secret key is covered [here](https://stripe.com/docs/keys)
-    - Login to your Stripe Account
-    - On the Dashboard, click **Developer**
-    - On the left side menu click **API-Keys**
-    - Click to reveal your **STRIPE_SECRET_KEY** (for testing purposes, top right toggles to Live)
-  - To connect the webhook and obtain **STRIPE_WH_SECRET**, additional documentation is 
-  [here](https://stripe.com/docs/webhooks/integration-builder)
-    - Login to your Stripe Account
-      - On the Dashboard, click **Developer**
-      - On the left side menu click **Webhooks**
-      - On the top right click **Add Endpoint**
-        - Endpoint-url: www.enter-your-domain-here.org/checkout/wh/
-        - Click on **Add events**
-        - Expand **Checkout** and check **checkout.session.completed** and **checkout.session.expired**
-        - Click on **Add events**
-        - Optional: Add a description
-        - Click on **Add Endpoint**
-      - On Secret Key for Signature, click to reveal the **STRIPE_WH_SECRET**
     - All variables should follow the schema ```os.environ.setdefault("VARIABLE_NAME", "VARIABLE")```
 
 ```
@@ -250,6 +240,35 @@ os.environ.setdefault("STRIPE_WH_SECRET", " Your Stripe webhook secret belongs h
 ```
 
 - Save file
+  - A way to generate a **SECRET_KEY** is [RandomKeygen](https://randomkeygen.com/)
+  - Obtaining your Database URL is covered [here]()
+    - It follows the schema ```postgres://USER:PASSWORD@localhost:PORT/DB_NAME```
+  - How to get your Email host user and password with the example gmail is covered
+  [here](https://dev.to/abderrahmanemustapha/how-to-send-email-with-django-and-gmail-in-production-the-right-way-24ab)
+  (start reading at "The Gmail part")
+
+Stripe
+- Getting a Stripe secret key is covered [here](https://stripe.com/docs/keys)
+  - Login to your Stripe Account
+  - On the Dashboard, click **Developer**
+  - On the left side menu click **API-Keys**
+  - Click to reveal your **STRIPE_SECRET_KEY** (for testing purposes, top right toggles to Live)
+  - To connect the webhook and obtain **STRIPE_WH_SECRET**, additional documentation is 
+  [here](https://stripe.com/docs/webhooks/integration-builder)
+  - Login to your Stripe Account
+    - On the Dashboard, click **Developer**
+    - On the left side menu click **Webhooks**
+    - On the top right click **Add Endpoint**
+      - Endpoint-url: www.enter-your-domain-here.org/checkout/wh/
+      - Click on **Add events**
+      - Expand **Checkout** and check **checkout.session.completed** and **checkout.session.expired**
+      - Click on **Add events**
+      - Optional: Add a description
+      - Click on **Add Endpoint**
+    - On Secret Key for Signature, click to reveal the **STRIPE_WH_SECRET**
+
+
+
 - Optional:
     - Create [virtual environment](https://docs.python.org/3/tutorial/venv.html)
     - Activate virtual environment
@@ -281,6 +300,96 @@ of your service provider from this schema.
 
 #### with Heroku
 
+AWS
+- You got an [AWS Account](https://aws.amazon.com/), do you? (We use a S3 Bucket as store for static and media files)
+  - Login, enter the **AWS Management Console** via **My Account**
+  - **Find Services**, search for **S3**
+  - Right side **Create Bucket**
+    - pick a Name 
+    - select a region (preferably where the app will be used) 
+    - uncheck *Block all public access* and confirm beyond (We want to serve the data to our users)
+    - **Create Bucket**
+  - Click on your new Bucket
+    - **Properties Tab**
+    - Activate **Static website hosting**
+      - use this bucket to host a website
+      - default values are fine
+      - Save
+    - **Permissions Tab**
+      - CORS Configuration
+      - paste Snippet below
+      - save
+      ```
+      [
+        {
+            "AllowedHeaders": [
+                "Authorization"
+            ],
+            "AllowedMethods": [
+                "GET"
+            ],
+            "AllowedOrigins": [
+                "*"
+            ],
+            "ExposeHeaders": []
+        }
+      ]
+      ```
+
+    - **Bucket Policy Tab**
+      - Copy the **ARN** (you need this multiple times, clipboard management or editor window)
+      - **Policy Generator** (new Tab)
+        - S3 Bucket Policy
+        - Principal: enter a *
+        - Actions: check **GetObject**
+        - ARN from the Bucket Policy Tab
+        - Add Statement
+        - Generate Policy
+      - Copy Policy in Bucket Policy Tab Editor
+        - add "/*" to the end of the ARN, compare line
+        ```"Ressource": "arn:aws:s3:::your-bucket/*",```
+        - save
+    - **Access Control List**
+      - Public access
+      - Everyone
+      - check List objects
+      - save
+  - Back to **Find Services**, search for **IAM**
+    - **Groups**
+      - **Create new group**
+        - **next**, **next**, **create group**
+    - **Policies**
+      - **Create Policy**
+        - **JSON Tab**
+        - **Import managed policy**
+        - Search for **AmazonS3FullAccess** policy
+          - Import
+          - Modify line to match your specific bucket
+
+            ```
+            "Ressource": [
+              "arn:aws:s3:::your-bucket",
+              "arn:aws:s3:::your-bucket/*",
+              ]
+            ```
+          - Review policy
+          - Add name, description
+          - **Create policy**
+    - **Groups**
+      - Select your new group
+      - **Attach policy**
+      - Select your new policy
+      - **Attach policy**
+    - **Users**
+      - **Add User**
+      - Add name
+      - check **Programmatic access**
+      - **next**
+      - Add User to our new group
+      - **next** to **create User**
+      - Download CSV (User credentials, **keep secret**)
+
+Heroku
 - [Login](https://id.heroku.com/login) to your Heroku Account
     - No Account? [Sign Up!](https://signup.heroku.com/)
     - select Python for primary language
@@ -315,6 +424,13 @@ of your service provider from this schema.
         - EMAIL_HOST_PASS
         - STRIPE_SECRET_KEY
         - STRIPE_WH_SECRET
+        - DATABASE_URL
+        - DOMAIN_URL, Your Domain (further down on **Settings**)
+        - USE_AWS, True
+        - AWS_S3_REGION_NAME, selected region for your bucket
+        - AWS_STORAGE_BUCKET_NAME, your buckets name
+        - AWS_ACCESS_KEY_ID, aws user credentials
+        - AWS_SECRET_ACCESS_KEY, aws user credentials
 - Optional:
     - Configure custom domain (hide that ugly name you had to pick, because all good names are taken)
       and SSL (both not covered here)

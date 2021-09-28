@@ -42,7 +42,6 @@ class Order(models.Model):
     country = CountryField("Country", blank_label="Country *", null=False, blank=False)
 
     date = models.DateTimeField(auto_now_add=True)
-    order_total = models.DecimalField(max_digits=10, decimal_places=2, null=False, default=0)
 
     original_cart = models.TextField(null=False, blank=False, default="")
     stripe_pid = models.CharField(max_length=254, null=False, blank=False, default="")
@@ -60,12 +59,12 @@ class Order(models.Model):
         """
         return str(self.uuid)
 
-    def save(self, *args, **kwargs):
+    @property
+    def status_change_date(self):
         """
-        Expand save method to generate xyz on order generation (=first save)
-        todo: populate order_total
+        return only date from datetimefield status_change
         """
-        super().save(*args, **kwargs)
+        return self.status_change.date()
 
     @property
     def order_items(self):
@@ -73,6 +72,27 @@ class Order(models.Model):
         get order items of the order
         """
         return self.items.all()
+
+    @property
+    def order_sum_net(self):
+        """
+        get order total, net
+        """
+        return self.items.aggregate(models.Sum("price_net"))["price_net__sum"]
+
+    @property
+    def order_sum_tax(self):
+        """
+        get order tax
+        """
+        return self.items.aggregate(models.Sum("tax_amount"))["tax_amount__sum"]
+
+    @property
+    def order_total(self):
+        """
+        get order total
+        """
+        return self.order_sum_net + self.order_sum_tax
 
     def generate_tickets(self):
         """

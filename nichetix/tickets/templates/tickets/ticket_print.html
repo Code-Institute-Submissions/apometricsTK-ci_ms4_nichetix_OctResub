@@ -22,9 +22,9 @@
 
 {% block content %}
 
-<section id="invoice">
+<section id="ticket">
     {# customized https://github.com/CourtBouillon/weasyprint-samples/blob/master/ticket/ticket.html #}
-    <h2>Ticket - <strong>{{ object.type.name }}</strong></h2>
+    <h2 class="print">Ticket - <strong>{{ object.type.name }}</strong></h2>
 
     <dl id="event">
         <dt>
@@ -39,7 +39,11 @@
         <dd>{{ object.event.date_start }} - {{ object.event.date_end }}</dd>
     </dl>
 
-    <dl id="ticket">
+    {% if svg %}
+        {{ svg | safe }}
+    {% endif %}
+
+    <dl id="ticket-data">
         <dt>
             <small>Ticket id</small>
         </dt>

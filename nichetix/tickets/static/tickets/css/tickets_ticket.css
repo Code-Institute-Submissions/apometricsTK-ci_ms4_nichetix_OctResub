@@ -1,9 +1,23 @@
+/* no header to show qr code instant on mobile */
+header {
+    display: none;
+}
+.card,
+#ticket {
+    margin-top: 6rem;
+}
 
-h2,
+h2.print,
 #ticket-footer {
     text-align: center;
+    display: inline-block;
+    width: 100%;
 }
 
 address small {
     font-weight: 700;
+}
+
+section#ticket svg {
+    float: right;
 }

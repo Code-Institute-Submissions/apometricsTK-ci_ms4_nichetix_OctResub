@@ -7,6 +7,7 @@ from django.urls import reverse
 from .models import TicketType, Ticket
 from .forms import TicketTypeForm
 from nichetix.events.models import Event
+from nichetix.core.utils import generate_qr
 
 User = get_user_model()
 
@@ -81,6 +82,11 @@ class TicketDetailView(DetailView):
     slug_field = "slug"
     template_name = "tickets/ticket_detail.html"
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["svg"] = generate_qr(self.object.slug)
+        return context
+
 
 class TicketPrintView(DetailView):
     """
@@ -89,6 +95,11 @@ class TicketPrintView(DetailView):
     model = Ticket
     slug_field = "slug"
     template_name = "tickets/ticket_print.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["svg"] = generate_qr(self.object.slug)
+        return context
 
 
 class TicketListView(LoginRequiredMixin, ListView):

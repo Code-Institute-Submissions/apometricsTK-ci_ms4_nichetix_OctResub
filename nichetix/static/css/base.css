@@ -87,15 +87,22 @@ nav {
     border-color: #000000;
 }
 
+/* Content */
+
+
 /* Event cards */
-
-
 
 .card-footer {
     background-color: #82B4C4;
 }
 
 /* forms */
+
+/* SVG */
+
+svg {
+    display: inline-block;
+}
 
 /* btn-file: Boutique Ado */
 .btn-file {

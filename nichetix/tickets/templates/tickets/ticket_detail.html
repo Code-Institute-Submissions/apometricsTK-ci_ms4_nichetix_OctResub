@@ -1,5 +1,11 @@
 {% extends "base.html" %}
 
+{% load static %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static "/tickets/css/tickets_ticket.css" %}"/>
+{% endblock extra_css %}
+
 {% block extra_title %}
     Ticket: {{ object.event.title }} - {{ object.type }}
 {% endblock extra_title %}
@@ -7,21 +13,65 @@
 {% block content %}
 
     <div class="card">
+        {% if svg %}
+            <div class="card-img-top img-fluid">
+                {{ svg | safe }}
+            </div>
+        {% endif %}
         <div class="card-body">
             <h2 class="card-title">{{ object.event.title }}</h2>
             <h3 class="card-subtitle">{{ object.type.name }}</h3>
 
-            <p>Ticket Id: {{ object.id }}</p>
-            <p>Bought: {{ object.bought }}</p>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">
+                    <strong><small>Ticket Id:</small></strong> {{ object.id }}
+                </li>
+                <li class="list-group-item">
+                    <strong><small>Bought:</small></strong> {{ object.bought }}
+                </li>
+                <li class="list-group-item">
+                    <strong><small>Type:</small></strong> {{ object.type }}
+                </li>
+                <li class="list-group-item">
+                    <strong><small>Description:</small></strong> {{ object.type.description_long }}
+                </li>
+                <li class="list-group-item">
+                    <strong><small>Event:</small></strong> {{ object.event }}
+                </li>
+                <li class="list-group-item">
+                    <strong><small>Description:</small></strong> {{ object.event.description_short }}
+                </li>
+                <li class="list-group-item">
+                    <strong><small>Time:</small></strong> {{ object.event.date_start }} - {{ object.event.date_end }}
+                </li>
+            </ul>
 
-            <p>Event: {{ object.event }}</p>
-            <p>Type: {{ object.type }}</p>
-            <p>Description: {{ object.type.description_long }}</p>
+            <address id="location">
+                <small>Location</small> <br>
+                {{ object.event.location.name }} <br>
+                {% if object.event.location.street_address1 %}
+                    {{ object.event.location.street_address1 }} <br>
+                {% endif %}
+                {% if object.event.location.street_address2 %}
+                    {{ object.event.location.street_address2 }} <br>
+                {% endif %}
+                {% if object.event.location.postcode %}
+                    {{ object.event.location.postcode }}
+                {% endif %}
+                {% if object.event.location.town_or_city %}
+                    {{ object.event.location.town_or_city }} <br>
+                {% endif %}
+                {% if object.event.location.county %}
+                    {{ object.event.location.county }} <br>
+                {% endif %}
+                {% if object.event.location.country %}
+                    {{ object.event.location.country.name }} <br>
+                {% endif %}
+                {% if object.event.location.phone_number %}
+                    {{ object.event.location.phone_number }} <br>
+                {% endif %}
+            </address>
 
-            <p>Price, net: {{ object.type.price_net }}</p>
-            <p>Tax rate: {{ object.type.tax_percent }} %</p>
-            <p>Tax amount: {{ object.type.tax_amount }}</p>
-            <p>Price: {{ object.type.price }}</p>
             <div class="card-footer">
                 <a href="{% url "tickets:ticket-print" object.slug %}" class="btn btn-nichetix">
                     Printable

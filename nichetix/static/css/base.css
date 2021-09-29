@@ -21,6 +21,7 @@ body {
     background-color: #9BD4D3;
     border-color: #000000;
     border-radius: 0;
+    margin: 2px 1px;
 }
 
 .btn-nichetix:hover {
@@ -32,6 +33,7 @@ body {
     background-color: #770436;
     border-color: #000000;
     border-radius: 0;
+    margin: 2px 1px;
 }
 
 .btn-nichetix-danger:hover {
@@ -70,7 +72,7 @@ h1, h2, h3, h4, h5 {
 
 header {
     background-color: #fbfbfb;
-    margin-top:6rem;
+    margin-top: 6rem;
 }
 
 /* Navbar */
@@ -120,6 +122,55 @@ footer {
     color: #9BD4D3;
 }
 
+/* Messages - Customized Boutique Ado */
+.message-container {
+    position: fixed;
+    margin-top: 6rem;
+    right: 3rem;
+    z-index: 99999;
+}
+
+.custom-toast {
+    float: right;
+    overflow: visible;
+}
+
+.toast-capper {
+    height: 2px;
+}
+
+.toast-header {
+    justify-content: space-between;
+}
+
+/* from CSS-tricks.com: https://css-tricks.com/snippets/css/css-triangle/ */
+.arrow-up {
+    width: 0;
+    height: 0;
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+    border-bottom: 10px solid black;
+    position: absolute;
+    top: -10px;
+    right: 36px;
+  }
+
+.arrow-info {
+    border-bottom-color: #9BD4D3 !important;
+}
+
+.arrow-success {
+    border-bottom-color: #82B4C4 !important;
+}
+
+.arrow-warning {
+    border-bottom-color: #770436 !important;
+}
+
+.arrow-error {
+    border-bottom-color: #770436 !important;
+}
+
 /* Content */
 
 
@@ -127,6 +178,17 @@ footer {
 
 .card-footer {
     background-color: #82B4C4;
+}
+
+/* Cart */
+
+.cart-item-control form {
+    display: inline-block;
+}
+
+.cart-item-control input[type=number] {
+    width: 4rem;
+    margin: 2px 1px;
 }
 
 /* forms */

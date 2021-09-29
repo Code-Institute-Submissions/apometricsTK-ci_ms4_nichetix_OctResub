@@ -5,6 +5,7 @@
   nav,
   header,
   footer,
+  div.toast,
   button {
     display: none !important;
   }

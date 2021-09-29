@@ -1,5 +1,8 @@
 {% extends "base.html" %}
 
+{% load static %}
+{% load cart_tools %}
+
 {% block extra_title %}
     Shopping Cart
 {% endblock extra_title %}
@@ -24,15 +27,14 @@
                     <ul class="list-group">
 
                     {% for cart_item in cart_items %}
-                        <li class="list-group item">
+                        <li class="list-group-item">
                             {{ cart_item.ticket_type }} ({{ cart_item.ticket_type.event.title }})
-                            {{ cart_item }}
-                            <div class="cart-item-control">
+                            <div class="cart-item-control text-center align-middle">
 
                                 <form action="{% url "cart:update" ticket_type_id=cart_item.ticket_type_id %}"
                                       method="POST">
                                     {% csrf_token %}
-                                    <label>Quantity:
+                                    <label>Quantity
                                         <input name="quantity"
                                                type="number"
                                                value="{{ cart_item.quantity }}"
@@ -51,14 +53,18 @@
                                         Remove
                                     </button>
                                 </form>
+                                <strong>Subtotal: </strong>{{ cart_item.ticket_type.price | calc_subtotal:cart_item.quantity }} €
                             </div>
                         </li>
                     {% endfor %}
 
+                    <div class="cart-warning text-center">
+                        <strong>Please update any changes before clicking Checkout.</strong>
+                    </div>
+
                     <div class="card-footer">
-                        <!-- todo: Checkout button doesn't update cart... formset? -->
                         <a href="{% url "events:upcoming" %}" class="btn btn-nichetix">Back</a>
-                        <a href="{% url "checkout:checkout" %}" class="btn btn-nichetix">
+                        <a href="{% url "checkout:checkout" %}" class="btn btn-nichetix" id="checkout-btn">
                             Checkout
                         </a>
                     </div>

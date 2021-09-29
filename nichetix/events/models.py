@@ -24,7 +24,7 @@ class Location(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT)
-    slug = AutoSlugField("Location URL", unique_with="owner", populate_from="name")
+    slug = AutoSlugField("Location URL", unique=True, populate_from="name")
     is_active = models.BooleanField("Active", default=True)
 
     def __str__(self):

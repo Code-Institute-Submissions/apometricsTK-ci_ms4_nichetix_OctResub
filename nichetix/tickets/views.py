@@ -74,6 +74,27 @@ class TicketTypeUpdateView(LoginRequiredMixin, UserPassesTestMixin, SuccessMessa
         )
 
 
+class TicketTypeDeleteView(LoginRequiredMixin, UserPassesTestMixin, SuccessMessageMixin, UpdateView):
+    """
+    Mark a TicketType as deleted
+    """
+    model = TicketType
+    slug_field = "slug"
+    template_name = "tickets/ticket_type_delete.html"
+    success_message = "Successfully deleted."
+    fields = ["is_active"]
+
+    def test_func(self, *args, **kwargs):
+        event = Event.objects.get(slug=self.kwargs["event_slug"])
+        return event.host == self.request.user
+
+    def get_success_url(self):
+        return reverse(
+            "events:detail",
+            kwargs={"slug": self.object.event.slug}
+        )
+
+
 class TicketDetailView(DetailView):
     """
     Ticket Detail view

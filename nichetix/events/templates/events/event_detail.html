@@ -6,72 +6,86 @@
 
 {% block content %}
 
-    <h2>{{ object.title }}</h2>
-    <div>
-        <p> {{ object.description_short }}</p>
-        <p>Date start: {{ object.date_start }}</p>
-        <p>Date end: {{ object.date_end }}</p>
-        <p>Location: {{ object.location }}, {{ object.location.foreign_url }}</p>
-        <p>Host: {{ object.description_host }}</p>
-        <p>Description: {{ object.description_long }}</p>
-        <p>Event url: {{ object.foreign_url }}</p>
-        <p>Image:
-            {% if event.image %}
-            <img src="{{ event.image.url }}" alt="{{ event.title }}">
-        {% else %}
-            None
-        {% endif %}
-        </p>
-        <p>Image URL: {{ object.image_url }}</p>
+    <div class="card">
+        <div class="card-body">
+            <h2 class="card-title">{{ object.title }}</h2>
 
-        {% if request.user.id != object.host_id %}
-            {% for ticket_type in ticket_type_list %}
-                <div>
-                    <h3>{{ ticket_type.name }}</h3>
-                    <p>{{ ticket_type.description_long }}</p>
-                    <p>Price: {{ ticket_type.price }}</p>
-                    <form action="{% url "cart:add" ticket_type_id=ticket_type.id %}" method="POST">
-                        {% csrf_token %}
-                        <input type="hidden" name="redirect_url" value="{{ request.path }}">
-                        <p>REMINDER: SET INPUT MAX TO AMOUNT OF TICKETS LEFT</p>
-                        <label for="id_qty_{{ ticket_type.id }}">Quantity:</label>
-                        <input type="number"
-                               data-ticket_type_id="{{ ticket_type.id }}"
-                               id="id_qty_{{ ticket_type.id }}"
-                               name="quantity" value="1" min="1"
-                               max="10"/>
-                        <input type="submit" value="Add to Cart">
-                    </form>
-                </div>
-            {% endfor %}
-        {% endif %}
-    </div>
+            <p> {{ object.description_short }}</p>
+            <p>Date start: {{ object.date_start }}</p>
+            <p>Date end: {{ object.date_end }}</p>
+            <p>Location: {{ object.location }}, {{ object.location.foreign_url }}</p>
+            <p>Host: {{ object.description_host }}</p>
+            <p>Description: {{ object.description_long }}</p>
+            <p>Event url: {{ object.foreign_url }}</p>
+            <p>Image:
+                {% if event.image %}
+                    <img src="{{ event.image.url }}" alt="{{ event.title }}">
+                {% else %}
+                    None
+                {% endif %}
+            </p>
+            <p>Image URL: {{ object.image_url }}</p>
 
-    {% if request.user.id == object.host_id %}
+            {% if request.user.id != object.host_id %}
+                {% for ticket_type in ticket_type_list %}
+                    <div>
+                        <h3>{{ ticket_type.name }}</h3>
+                        <p>{{ ticket_type.description_long }}</p>
+                        <p>Price: {{ ticket_type.price }}</p>
+                        <form action="{% url "cart:add" ticket_type_id=ticket_type.id %}" method="POST">
+                            {% csrf_token %}
+                            <input type="hidden" name="redirect_url" value="{{ request.path }}">
+                            <p>REMINDER: SET INPUT MAX TO AMOUNT OF TICKETS LEFT</p>
+                            <label for="id_qty_{{ ticket_type.id }}">Quantity:</label>
+                            <input type="number"
+                                   data-ticket_type_id="{{ ticket_type.id }}"
+                                   id="id_qty_{{ ticket_type.id }}"
+                                   name="quantity" value="1" min="1"
+                                   max="10"/>
+                            <input type="submit" value="Add to Cart">
+                        </form>
+                    </div>
+                {% endfor %}
 
-        <div>
-            <a href="{% url "events:update" object.slug %}">Update event information</a>
-            <a href="{% url "tickets:ticket-type-create" object.slug %}">Add ticket type</a>
         </div>
 
-        {% for ticket_type in ticket_type_list %}
-            <div>
-                <h4>{{ ticket_type.name }}</h4>
-                <p>Sale start: {{ ticket_type.sale_start }}</p>
-                <p>Sale end: {{ ticket_type.sale_end }}</p>
-                <p>Quota: {{ ticket_type.quota }}</p>
-                <p>Price, net: {{ ticket_type.price_net }}</p>
-                <p>Tax: {{ ticket_type.tax }}</p>
-                <p>Price: {{ ticket_type.price }}</p>
-                <a href="{% url "tickets:ticket-type-detail" slug=ticket_type.slug event_slug=ticket_type.event.slug %}">
-                    Detail
-                </a>
-                <a href="{% url "tickets:ticket-type-update" slug=ticket_type.slug event_slug=ticket_type.event.slug %}">
-                    Update
-                </a>
-            </div>
-        {% endfor %}
+            {% else %}
 
-    {% endif %}
+                {% for ticket_type in ticket_type_list %}
+                    <div>
+                        <h4>{{ ticket_type.name }}</h4>
+                        <p>Sale start: {{ ticket_type.sale_start }}</p>
+                        <p>Sale end: {{ ticket_type.sale_end }}</p>
+                        <p>Quota: {{ ticket_type.quota }}</p>
+                        <p>Price, net: {{ ticket_type.price_net }}</p>
+                        <p>Tax: {{ ticket_type.tax }}</p>
+                        <p>Price: {{ ticket_type.price }}</p>
+                        <a href="{% url "tickets:ticket-type-detail" slug=ticket_type.slug event_slug=ticket_type.event.slug %}">
+                            Detail
+                        </a>
+                        <a href="{% url "tickets:ticket-type-update" slug=ticket_type.slug event_slug=ticket_type.event.slug %}">
+                            Update
+                        </a>
+                    </div>
+                {% endfor %}
+
+        </div>
+
+                <div class="card-footer">
+                    <div>
+                        <a href="{% url "events:update" object.slug %}" class="btn btn-nichetix">
+                            Update event information
+                        </a>
+                        <a href="{% url "tickets:ticket-type-create" object.slug %}" class="btn btn-nichetix">
+                            Add ticket type
+                        </a>
+                        <a href="{% url "events:delete" object.slug %}"
+                           class="btn btn-nichetix-danger">
+                            Delete
+                        </a>
+                    </div>
+                </div>
+            {% endif %}
+    </div>
 
 {% endblock content %}

@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% load crispy_forms_tags %}
+
+{% block extra_title %}
+    {{ object.name }}
+{% endblock extra_title %}
+
+{% block content %}
+    <div class="card">
+        <div class="card-body">
+            <h2 class="card-title">
+                Ticket type: {{ object.name }}
+            </h2>
+            <div>
+                {% if object.tickets.count == 0 %}
+                    <form class="form-horizontal" method="post"
+                          action="{% url "tickets:ticket-type-delete" event_slug=object.event.slug slug=object.slug %}">
+                        {% csrf_token %}
+                        {{ form | crispy }}
+                        <p>
+                            If you are sure, untick the checkbox and click "Delete".
+                        </p>
+                        <div class="card-footer">
+                            <a href="{% url "tickets:ticket-type-detail" event_slug=object.event.slug slug=object.slug %}"
+                               class="btn btn-nichetix">
+                                Back
+                            </a>
+                            <button type="submit" class="btn btn-nichetix-danger">
+                                Delete Ticket type
+                            </button>
+                        </div>
+                    </form>
+
+                {% else %}
+                    <p>
+                        Already sold tickets with this type - sry, but we can't delete this type any longer.
+                    </p>
+                    <p>
+                        We can stop the sale now - please update the types "Sale End" with the according time.
+                    </p>
+                    <div class="card-footer">
+                        <a href="{% url "tickets:ticket-type-detail" event_slug=object.event.slug slug=object.slug %}"
+                           class="btn btn-nichetix">
+                            Back
+                        </a>
+                    </div>
+                {% endif %}
+
+            </div>
+        </div>
+    </div>
+{% endblock content %}

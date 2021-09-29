@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block extra_title %}
+    {{ object.name }}
+{% endblock extra_title %}
+
+{% block content %}
+    <div class="card">
+        <div class="card-body">
+            <h2 class="card-title">
+                Event: {{ object.title }}
+            </h2>
+            <div>
+                {% if object.ticket_types.count == 0 or object.ticket_types.tickets.count == 0%}
+                    <form class="form-horizontal" method="post"
+                          action="{% url "events:delete" slug=object.slug %}">
+                        {% csrf_token %}
+                        {{ form | crispy }}
+                        <p>
+                            If you are sure, untick the checkbox and click "Delete".
+                        </p>
+                        <div class="card-footer">
+                            <a href="{% url "events:detail" slug=object.slug %}"
+                               class="btn btn-nichetix">
+                                Back
+                            </a>
+                            <button type="submit" class="btn btn-nichetix-danger">
+                                Delete Location
+                            </button>
+                        </div>
+                    </form>
+
+                {% else %}
+                    <p>
+                        Already sold tickets for this event - sry, but we can't just delete this any longer.
+                        Make sure your ticket types are out of sale period and contact support for help with the refund
+                        process.
+                    </p>
+
+                    <div class="card-footer">
+                        <a href="{% url "events:detail" slug=object.slug %}"
+                           class="btn btn-nichetix">
+                            Back
+                        </a>
+                    </div>
+                {% endif %}
+
+            </div>
+        </div>
+    </div>
+
+{% endblock content %}

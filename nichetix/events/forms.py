@@ -45,10 +45,10 @@ class EventForm(forms.ModelForm):
 
     def __init__(self, user, *args, **kwargs):
         """
-        Let a user only select his own locations
+        Let a user only select his own, active locations
         """
         super(EventForm, self).__init__(*args, **kwargs)
-        self.fields["location"].queryset = Location.objects.filter(owner=user)
+        self.fields["location"].queryset = Location.objects.filter(owner=user).filter(is_active=True)
 
     def _clean_fields(self):
         """
@@ -87,7 +87,6 @@ class LocationForm(forms.ModelForm):
         model = Location
         fields = [
             "name",
-            "google_places_id",
             "street_address1",
             "street_address2",
             "town_or_city",

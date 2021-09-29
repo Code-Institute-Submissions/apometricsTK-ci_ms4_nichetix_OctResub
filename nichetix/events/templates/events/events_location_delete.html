@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% load crispy_forms_tags %}
+
+{% block extra_title %}
+    {{ object.name }}
+{% endblock extra_title %}
+
+{% block content %}
+    <div class="card">
+        <div class="card-body">
+            <h2 class="card-title">
+                Location: {{ object.name }}
+            </h2>
+            <div>
+                {% if object.events.count == 0 %}
+                    <form class="form-horizontal" method="post"
+                          action="{% url "events:location-delete" slug=object.slug %}">
+                        {% csrf_token %}
+                        {{ form | crispy }}
+                        <p>
+                            If you are sure, untick the checkbox and click "Delete".
+                        </p>
+                        <div class="card-footer">
+                            <a href="{% url "events:location-detail" slug=object.slug %}"
+                               class="btn btn-nichetix">
+                                Back
+                            </a>
+                            <button type="submit" class="btn btn-nichetix-danger">
+                                Delete Location
+                            </button>
+                        </div>
+                    </form>
+
+                {% else %}
+                    <p>
+                        There are still events bound to this location. Please update the events with another
+                        location first.
+                    </p>
+
+                    <div class="list-group list-group-item-action">
+                        {% for event in object.events.all %}
+                            <a href="{% url "events:detail" event.slug %}" class="list-group-item">
+                                {{ event.title }}
+                            </a>
+                        {% endfor %}
+                    </div>
+                    <div class="card-footer">
+                        <a href="{% url "events:location-detail" slug=object.slug %}"
+                           class="btn btn-nichetix">
+                            Back
+                        </a>
+                    </div>
+                {% endif %}
+
+            </div>
+        </div>
+    </div>
+{% endblock content %}

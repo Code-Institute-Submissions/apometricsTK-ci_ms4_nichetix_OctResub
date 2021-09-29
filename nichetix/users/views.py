@@ -52,8 +52,7 @@ class UserUpdateView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
 class UserApplicationView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
     """
     View to implement the ability for a user ask for host permissions,
-    Right now: The user toggles himself (!)
-    todo: Should it be this way in submission version?
+    Right now: The user toggles himself (!) for assessment purposes
     """
     model = User
     fields = ["can_host"]

@@ -7,7 +7,6 @@ from django.utils import timezone
 
 from .models import Event, Location
 from .forms import EventForm, LocationForm
-from nichetix.tickets.models import TicketType
 
 User = get_user_model()
 
@@ -18,8 +17,7 @@ class EventsUpcomingListView(ListView):
     todo: refine filter: start from now on or end from now on
     """
     model = Event
-    queryset = Event.objects.filter(date_start__gte=timezone.now())
-    ordering = ["date_start"]
+    queryset = Event.objects.filter(is_active=True).filter(date_start__gte=timezone.now()).order_by("date_start")
     template_name = "events/events_upcoming.html"
 
 
@@ -27,20 +25,19 @@ class EventsManageListView(LoginRequiredMixin, ListView):
     """
     List View of Events hosted by a User
     todo: handle empty list
-    todo: check if get_queryset needs a "super" call
     """
     model = Event
     template_name = "events/events_upcoming.html"
 
     def get_queryset(self):
-        queryset = Event.objects.filter(host=self.request.user).order_by("date_start")
+        queryset = super().get_queryset()
+        queryset = queryset.filter(host=self.request.user).filter(is_active=True).order_by("date_start")
         return queryset
 
 
 class EventsDetailView(DetailView):
     """
     Detail View of an event, added context: the ticket_types of the event
-    todo: call to TicketType necessary? maybe just via the event model?
     """
     model = Event
     slug_field = "slug"
@@ -48,11 +45,10 @@ class EventsDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(EventsDetailView, self).get_context_data(**kwargs)
-        context["ticket_type_list"] = TicketType.objects.filter(event=self.object)
+        context["ticket_type_list"] = self.object.ticket_types.filter(is_active=True)
         return context
 
 
-# todo: refactor Create & Update View to a single class?
 class EventsCreateView(LoginRequiredMixin, UserPassesTestMixin, SuccessMessageMixin, CreateView):
     """
     Create View for an Event
@@ -106,19 +102,37 @@ class EventsUpdateView(LoginRequiredMixin, UserPassesTestMixin, SuccessMessageMi
         )
 
 
+class EventsDeleteView(LoginRequiredMixin, UserPassesTestMixin, SuccessMessageMixin, UpdateView):
+    """
+    Mark a Event as deleted
+    """
+    model = Event
+    slug_field = "slug"
+    template_name = "events/event_delete.html"
+    success_message = "Succesfully deleted."
+    fields = ["is_active"]
+
+    def test_func(self, *args, **kwargs):
+        event = Event.objects.get(slug=self.kwargs["slug"])
+        return event.host == self.request.user
+
+    def get_success_url(self):
+        return reverse("events:manage")
+
+
 class LocationManageListView(LoginRequiredMixin, UserPassesTestMixin, ListView):
     """
     List of Locations for Events of a User (each User has own Locations)
     """
     model = Location
-    ordering = ["name"]
-    template_name = "events/events_locations.html"
+    template_name = "events/events_location_list.html"
 
     def test_func(self):
         return self.request.user.can_host
 
     def get_queryset(self):
-        queryset = Location.objects.filter(owner=self.request.user).order_by("name")
+        queryset = super().get_queryset()
+        queryset = queryset.filter(owner=self.request.user).filter(is_active=True).order_by("name")
         return queryset
 
 
@@ -173,3 +187,21 @@ class LocationsUpdateView(LoginRequiredMixin, UserPassesTestMixin, SuccessMessag
             "events:location-detail",
             kwargs={"slug": self.object.slug},
         )
+
+
+class LocationsDeleteView(LoginRequiredMixin, UserPassesTestMixin, SuccessMessageMixin, UpdateView):
+    """
+    Mark a Location as deleted
+    """
+    model = Location
+    slug_field = "slug"
+    template_name = "events/events_location_delete.html"
+    success_message = "Successfully deleted."
+    fields = ["is_active"]
+
+    def test_func(self, *args, **kwargs):
+        location = Location.objects.get(slug=self.kwargs["slug"])
+        return location.owner == self.request.user
+
+    def get_success_url(self):
+        return reverse("events:locations")

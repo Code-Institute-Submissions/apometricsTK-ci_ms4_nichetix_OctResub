@@ -27,7 +27,7 @@ class TicketType(models.Model):
         (ZERO, ZERO_PERCENT),
     )
 
-    event = models.ForeignKey("events.Event", on_delete=models.PROTECT)
+    event = models.ForeignKey("events.Event", on_delete=models.PROTECT, related_name="ticket_types")
     name = models.CharField("Ticket name", max_length=100, )
     slug = AutoSlugField("Ticket type URL", unique_with="event", populate_from="name")
     description_long = models.TextField("Text Description", )
@@ -38,6 +38,7 @@ class TicketType(models.Model):
     quota = models.PositiveSmallIntegerField("Quota", )
     price_net = models.DecimalField("Price", max_digits=6, decimal_places=2)
     tax = models.CharField("Tax rate", max_length=4, choices=TAX_RATES, blank=False, default=BASE)
+    is_active = models.BooleanField("Active", default=True)
 
     def __str__(self):
         return str(self.name)

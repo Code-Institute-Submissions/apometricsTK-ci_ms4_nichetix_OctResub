@@ -25,6 +25,10 @@
                    class="btn btn-nichetix">
                     Update
                 </a>
+                <a href="{% url "tickets:ticket-type-delete" slug=object.slug event_slug=object.event.slug %}"
+                   class="btn btn-nichetix-danger">
+                    Delete
+                </a>
             </div>
         </div>
     </div>

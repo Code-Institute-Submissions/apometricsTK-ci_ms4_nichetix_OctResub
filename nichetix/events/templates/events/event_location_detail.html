@@ -10,9 +10,7 @@
         <div class="card-body">
             <h2 class="card-title">{{ object.name }}</h2>
 
-
             <p>Name: {{ object.name }}</p>
-            <p>Google Places Id: {{ object.google_places_id }}</p>
             <p>Street Address1: {{ object.street_address1 }}</p>
             <p>Street Address2: {{ object.street_address2 }}</p>
             <p>Town or City: {{ object.town_or_city }}</p>
@@ -21,10 +19,20 @@
             <p>Country: {{ object.country }}</p>
             <p>Phone Number: {{ object.phone_number }}</p>
             <p>Email: {{ object.email }}</p>
-            <a href="{{ object.foreign_url }}">{{ object.foreign_url }}</a>
+            <p>Foreign URL:
+                {% if object.foreign_url %}
+                    <a href="{{ object.foreign_url }}">{{ object.foreign_url }}</a>
+                {% else %}
+                    None
+                {% endif %}
+            </p>
             <div class="card-footer">
                 <a href="{% url "events:location-update" object.slug %}" class="btn btn-nichetix">
                     Update Location
+                </a>
+                <a href="{% url "events:location-delete" slug=object.slug %}"
+                   class="btn btn-nichetix-danger">
+                    Delete
                 </a>
             </div>
         </div>

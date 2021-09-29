@@ -22,6 +22,17 @@ body {
     background-color: #82B4C4;
 }
 
+.btn-nichetix-danger {
+    color: #ffffff;
+    background-color: #770436;
+    border-color: #000000;
+    border-radius: 0;
+}
+
+.btn-nichetix-danger:hover {
+    background-color: red;
+}
+
 .card-footer {
     margin-top: 0.5rem;
     text-align: end;

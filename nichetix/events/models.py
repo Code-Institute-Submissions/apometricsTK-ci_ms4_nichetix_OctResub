@@ -3,13 +3,6 @@ from django.db import models
 from autoslug import AutoSlugField
 from django_countries.fields import CountryField
 
-# todo: handle ProtectedError on Location.owner, Event.host, Event.location -> just mark as inactive
-# todo: implement deleted, active/inactive marker
-# todo: implement review process
-# todo: urls doesnt change vs upd title on Event.slug
-
-# todo: base class "mark as deleted" // meta class (proxy model!) Abstract model! inherit other models
-
 
 class Location(models.Model):
     """
@@ -32,6 +25,7 @@ class Location(models.Model):
     modified = models.DateTimeField(auto_now=True)
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT)
     slug = AutoSlugField("Location URL", unique_with="owner", populate_from="name")
+    is_active = models.BooleanField("Active", default=True)
 
     def __str__(self):
         return str(self.name)
@@ -47,7 +41,7 @@ class Event(models.Model):
     description_short = models.CharField("Tweetable Description", max_length=280, )
     description_long = models.TextField("Text Description", )
     description_host = models.CharField("Host name and info", max_length=560, )
-    location = models.ForeignKey(Location, on_delete=models.PROTECT)
+    location = models.ForeignKey(Location, on_delete=models.PROTECT, related_name="events")
     date_start = models.DateTimeField("Event Start", )
     date_end = models.DateTimeField("Event End", )
 
@@ -57,6 +51,7 @@ class Event(models.Model):
 
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
+    is_active = models.BooleanField("Active", default=True)
 
     def __str__(self):
         return str(self.title)

@@ -10,7 +10,7 @@
 
     {% if location_list.count == 0 %}
     <div>
-        You don't have any orders yet.
+        You don't have any locations yet.
     </div>
 
     {% else %}
@@ -29,8 +29,17 @@
                 <p>Country: {{ location.country }}</p>
                 <p>Phone Number: {{ location.phone_number }}</p>
                 <p>Email: {{ location.email }}</p>
-                <p>Foreign URL: <a href="{{ location.foreign_url }}">{{ location.foreign_url }}</a></p>
+                <p>Foreign URL:
+                    {% if location.foreign_url %}
+                        <a href="{{ location.foreign_url }}">{{ location.foreign_url }}</a>
+                    {% else %}
+                        None
+                    {% endif %}
+                </p>
                 <div class="card-footer">
+                    <a href="{% url "events:location-detail" location.slug %}" class="btn btn-nichetix">
+                        Details
+                    </a>
                     <a href="{% url "events:location-update" location.slug %}" class="btn btn-nichetix">
                         Update Location
                     </a>

@@ -5,7 +5,6 @@ from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.core.mail import send_mail
 from django.http import HttpResponse
 from django.views.generic import DetailView, CreateView, RedirectView, ListView
 from django.views.decorators.csrf import csrf_exempt
@@ -58,9 +57,11 @@ class CheckoutOrderListView(LoginRequiredMixin, ListView):
 class CheckoutSuccessView(RedirectView):
     """
     Redirect view for successful paid orders via stripe
-    adds success message and redirects on order detail view
+    adds success message, deletes cart and redirects on order detail view
     """
     def get_redirect_url(self, *args, **kwargs):
+        if "cart" in self.request.session:
+            del self.request.session["cart"]
         messages.add_message(self.request, messages.SUCCESS,
                              "Order processed successfully.")
         order = get_object_or_404(Order, slug=self.kwargs["slug"])

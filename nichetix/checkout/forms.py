@@ -49,22 +49,3 @@ class OrderForm(forms.ModelForm):
                 self.fields[field].widget.attrs["placeholder"] = placeholder
             self.fields[field].widget.attrs["class"] = "stripe-style-input"
             self.fields[field].label = False
-
-
-class OrderItemForm(forms.ModelForm):
-    class Meta:
-        model = OrderItem
-        fields = (
-            "ticket_type",
-            "quantity",
-        )
-
-        widgets = {
-            "ticket_type": forms.widgets.HiddenInput,
-            "quantity": forms.widgets.HiddenInput,
-        }
-
-    def __init__(self, *args, **kwargs):
-        super(OrderItemForm, self).__init__(*args, **kwargs)
-        self.fields["ticket_type"].disabled = True
-        self.fields["quantity"].disabled = True

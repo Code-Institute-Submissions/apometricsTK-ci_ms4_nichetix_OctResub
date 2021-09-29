@@ -11,6 +11,11 @@ body {
     flex-direction: column;
 }
 
+.container-fluid {
+    width: 97%;
+    padding: 5px 0;
+}
+
 .btn-nichetix {
     color: #000000;
     background-color: #9BD4D3;

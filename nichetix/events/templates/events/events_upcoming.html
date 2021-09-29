@@ -9,11 +9,11 @@
     <h2>Upcoming Events</h2>
     <h3>On {% now "SHORT_DATETIME_FORMAT" %}</h3>
 
-    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3">
+    <div class="row" data-masonry='{"percentPosition": true}'>
 
-    {% for event in event_list %}
+        {% for event in event_list %}
 
-        <div class="col card-wrapper mb-3">
+        <div class="card-wrapper mb-3 col-12 col-md-6 col-lg-4">
             <div class="card">
                 {% if event.image %}
                     <img src="{{ event.image.url }}" class="card-img-top img-fluid" alt="{{ event.title }}">
@@ -31,20 +31,22 @@
                         Details
                     </a>
 
-                    {% if request.user == event.host %}
-                        <a href="{% url "events:update" event.slug %}" class="btn btn-sm btn-nichetix">
-                            Update event information
-                        </a>
-                        <a href="{% url "tickets:ticket-type-create" event.slug %}" class="btn btn-sm btn-nichetix">
-                            Add ticket type
-                        </a>
-                    {% endif %}
+                        {% if request.user == event.host %}
+                            <a href="{% url "events:update" event.slug %}" class="btn btn-sm btn-nichetix">
+                                Update event information
+                            </a>
+                            <a href="{% url "tickets:ticket-type-create" event.slug %}" class="btn btn-sm btn-nichetix">
+                                Add ticket type
+                            </a>
+                        {% endif %}
 
+                    </div>
                 </div>
             </div>
-        </div>
 
-    {% endfor %}
+        {% endfor %}
+
     </div>
+
 
 {% endblock content %}

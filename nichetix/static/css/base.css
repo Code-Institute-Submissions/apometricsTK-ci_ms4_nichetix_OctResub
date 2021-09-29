@@ -64,6 +64,7 @@ h1, h2, h3, h4, h5 {
 }
 
 header {
+    background-color: #fbfbfb;
     margin-top:6rem;
 }
 
@@ -96,6 +97,22 @@ nav {
     color: #fbfbfb;
     background-color: #82B4C4;
     border-color: #000000;
+}
+
+/* Footer */
+footer {
+    background-color: #fbfbfb;
+    margin-top: auto;
+    width: 100%;
+}
+
+.social-link-list li i {
+    color: #82B4C4;
+    font-size: 1.5em;
+}
+
+.social-link-list li i:hover {
+    color: #9BD4D3;
 }
 
 /* Content */

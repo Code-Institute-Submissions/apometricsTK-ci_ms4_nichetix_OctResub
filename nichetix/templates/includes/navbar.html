@@ -29,21 +29,6 @@
                     </li>
                 {% endif %}
 
-                {% if request.user.can_host %}
-                    <li class="nav-item">
-                        <a href="{% url "events:create" %}" class="nav-link">Create Event</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="{% url "events:manage" %}" class="nav-link">Manage my Events</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="{% url "events:location-create" %}" class="nav-link">Create Location</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="{% url "events:locations" %}" class="nav-link">Manage my Locations</a>
-                    </li>
-                {% endif %}
-
                 <li class="nav-item">
                     <a href="{% url "cart:content" %}" class="nav-link">
                         {% if ticket_count > 0 %}
@@ -53,6 +38,22 @@
                         {% endif %}
                     </a>
                 </li>
+
+                {% if request.user.can_host %}
+                    <li class="nav-item host-nav-item">
+                        <a href="{% url "events:manage" %}" class="nav-link">Manage my Events</a>
+                    </li>
+                    <li class="nav-item host-nav-item">
+                        <a href="{% url "events:create" %}" class="nav-link">Create Event</a>
+                    </li>
+
+                    <li class="nav-item host-nav-item">
+                        <a href="{% url "events:locations" %}" class="nav-link">Manage my Locations</a>
+                    </li>
+                    <li class="nav-item host-nav-item">
+                        <a href="{% url "events:location-create" %}" class="nav-link">Create Location</a>
+                    </li>
+                {% endif %}
             </ul>
         </div>
     </div>

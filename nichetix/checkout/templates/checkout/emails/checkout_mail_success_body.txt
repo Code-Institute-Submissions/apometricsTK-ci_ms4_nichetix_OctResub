@@ -1,12 +1,12 @@
 Hello and thank you for your purchase!
 
-You can find your invoice here: {% url "checkout:invoice" order.slug %}
+You can find your invoice here: {{ domain }}{% url "checkout:invoice" order.slug %}
 
 Your ticket(s):
-{% for item in object.order_items.all %}
+{% for item in order.order_items.all %}
     {{ item.event_name }} | {{ item.ticket_name }}
     {% for ticket in item.tickets.all %}
-        {% url "tickets:ticket-detail" ticket.slug %}
+        {{ domain }}{% url "tickets:ticket-detail" ticket.slug %}
     {% endfor %}
 {% endfor %}
 

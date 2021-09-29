@@ -249,7 +249,9 @@ def checkout_stripe_wh_view(request):
                 subject = f"Nichetix: Order { order.order_number } Invoice and Tickets"
                 body = render_to_string(
                     "checkout/emails/checkout_mail_success_body.txt",
-                    {"order": order})
+                    {"order": order,
+                     "domain": settings.ALLOWED_HOSTS[0],
+                     })
                 send_mail(
                     subject,
                     body,

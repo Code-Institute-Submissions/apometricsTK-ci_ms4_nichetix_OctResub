@@ -5,10 +5,12 @@ from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.mail import send_mail
 from django.http import HttpResponse
 from django.views.generic import DetailView, CreateView, RedirectView, ListView
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import redirect, get_object_or_404, reverse
+from django.template.loader import render_to_string
 
 from .models import Order, OrderItem
 from .forms import OrderForm
@@ -203,6 +205,7 @@ def checkout_stripe_wh_view(request):
     - Verify Signature
     - Identify connected order and update with pid and status
     - Generate the tickets
+    - Send confirmation mail
     Compare;
     https://stripe.com/docs/webhooks/signatures
     https://stripe.com/docs/api/events
@@ -241,6 +244,17 @@ def checkout_stripe_wh_view(request):
             order.save()
             if order.status == "paid":
                 order.generate_tickets()
+
+                mail_target = order.email
+                subject = f"Nichetix: Order { order.order_number } Invoice and Tickets"
+                body = render_to_string(
+                    "checkout/emails/checkout_mail_success_body.txt",
+                    {"order": order})
+                send_mail(
+                    subject,
+                    body,
+                    settings.DEFAULT_FROM_EMAIL,
+                    [mail_target])
 
         elif event.type == "checkout.session.expired":
             order.status = "abort"

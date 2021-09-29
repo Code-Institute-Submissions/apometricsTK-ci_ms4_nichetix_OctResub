@@ -100,3 +100,7 @@ aside#invoice-footer {
   font-style: normal;
   white-space: pre-line;
 }
+
+footer {
+  display: none;
+}

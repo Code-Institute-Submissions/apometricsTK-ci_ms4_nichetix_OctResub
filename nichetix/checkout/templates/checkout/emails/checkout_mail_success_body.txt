@@ -1,0 +1,21 @@
+Hello and thank you for your purchase!
+
+You can find your invoice here: {% url "checkout:invoice" order.slug %}
+
+Your ticket(s):
+{% for item in object.order_items.all %}
+    {{ item.event_name }} | {{ item.ticket_name }}
+    {% for ticket in item.tickets.all %}
+        {% url "tickets:ticket-detail" ticket.slug %}
+    {% endfor %}
+{% endfor %}
+
+We hope you enjoy your purchase!
+
+Sincerely,
+the team of Nichetix
+
+
+PS:
+Any questions, feedback, ... ?
+Feel free to contact us at support@nichetix.de !

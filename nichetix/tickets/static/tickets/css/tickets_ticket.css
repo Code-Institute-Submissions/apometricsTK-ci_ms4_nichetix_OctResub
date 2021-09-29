@@ -21,3 +21,7 @@ address small {
 section#ticket svg {
     float: right;
 }
+
+footer {
+    display: none;
+}

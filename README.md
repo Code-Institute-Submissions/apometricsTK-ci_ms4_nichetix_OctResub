@@ -119,7 +119,7 @@ A user is able to...
 
 #### Bugfix
 
-- Implement formset with initial values to update cart and checkout without "hacked" workarounds (compare [Bugs while
+- Implement formset with initial values to update cart and checkout without "hacky" workarounds (compare [Bugs while
 developing](#Bugs-while-developing)).
 
 #### Widen scope
@@ -253,7 +253,34 @@ developing](#Bugs-while-developing)).
 
 #### Formsets with disabled fields
 
+The cart-content view doesn't update changes of the cart items on click of the checkout button. Multiple attempts to use
+[BaseInlineFormSets](https://cdf.9vo.lt/3.0/django.forms.models/BaseInlineFormSet.html) show different problems;
+- User should not be able to **select any ticket type** on this view (not in scope for this view): Narrow down fields
+or choices.
+- Disabled fields via custom widgets are not sent by post. Readonly is not a safe way. The 
+[django disabled field feature](https://docs.djangoproject.com/en/3.2/ref/forms/fields/#disabled) did not work for my
+formset code.
+- **Initial data** should be presented, delivered by the cart (without: very bad user experience).
+- A formset with an **unknown multiple** of the same form: Extra should be set by order items on checkout.
+- Javascript is just able to provide "hacky" solutions (click form submit on change, disable checkout, ...), due to
+protected cookie.
+
+- Without deadline, another attempt will be tried with this newly found resources:
+  - https://datalowe.com/post/formsets-tutorial-1/
+  - https://forum.djangoproject.com/t/pass-different-parameters-to-each-form-in-formset/4040
+
 #### Datetimepicker timezone
+
+Djangos [DateTimeField](https://docs.djangoproject.com/en/3.2/ref/forms/fields/#datetimefield) widget is DateTimeInput,
+rendering input type=text, with format set. Customizing the widget to datetime-local has 
+[bad cross-browser coverage](https://caniuse.com/?search=datetime-local), datetime is dropped from specification. A
+custom widget is necessary for same user experience, independent of the used browser. 
+Compare [commit message](https://github.com/apometricsTK/ci_ms4_nichetix/commit/18cdc8537a44f87fb51c0e734c23fa90e7a65eaa#diff-c7d995d00d9fda9a866dc2ef1ceca4eb61978120d23fcfba126afa8aabf52d7cL36-L58)
+
+The provided datetime for the initial data is timezone-naive(!) - providing only an empty string with the 
+[format %z](https://docs.python.org/3/library/datetime.html#strftime-strptime-behavior). A custom connection of the
+jquery DateTimePicker (format for timezone hour-offset: "O", undocumented(?)) and custom widgets, was out of scope for
+this project.
 
 ### Validators
 

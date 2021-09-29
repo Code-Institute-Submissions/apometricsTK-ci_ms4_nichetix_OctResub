@@ -1,6 +1,8 @@
 /*
 https://github.com/xdan/datetimepicker
 https://xdsoft.net/jqplugins/datetimepicker/
+
+datetimepicker configuration
 */
 $(document).ready(function () {
     $.datetimepicker.setLocale('en');

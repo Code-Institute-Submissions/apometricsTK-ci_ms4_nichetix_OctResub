@@ -14,7 +14,7 @@ def generate_qr(slug):
     Compare: https://medium.com/geekculture/how-to-generate-a-qr-code-in-django-e32179d7fdf2
     """
     factory = qrcode.image.svg.SvgPathImage
-    url = DOMAIN + "/tickets/" + slug
+    url = "https://" + DOMAIN + "/tickets/" + slug
     img = qrcode.make(url, image_factory=factory, box_size=15)
     stream = BytesIO()
     img.save(stream)

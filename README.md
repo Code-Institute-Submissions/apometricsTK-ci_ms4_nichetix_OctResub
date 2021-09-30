@@ -1,6 +1,6 @@
 # MS4 – Nichetix: The events & tickets platform for your community
 
-![opener]()
+![opener](/readmeAssets/opener.jpg)
 
 [The platform](https://ci-ms4-nichetix.herokuapp.com/) is a Full-Stack-Project which enables a defined niche 
 community like regional or special interest (e.g. service providers and retailers in a village or small town; 
@@ -97,9 +97,9 @@ use-cases a clean and basic design with muted colors helps to gain an overview a
 #### Host
 
 A user with host permission is able to...
-- Create, update and delete events, therefore present his events and services.
-- Create, update and delete locations, to guide guests to his events and services.
-- Create, update and delete ticket-types, enabling the host make diverse offers (e.g. VIP or early bird tickets).
+- Create, update and delete/mark as inactive events, therefore present his events and services.
+- Create, update and delete/mark as inactive locations, to guide guests to his events and services.
+- Create, update and delete/mark as inactive ticket-types, enabling the host make diverse offers (e.g. VIP or early bird tickets).
 
 #### Guest
 
@@ -305,6 +305,8 @@ validate template schema.
 - Strg+C
 - Strg+V
 
+For Database operations the local version was observed with pgAdmin.
+
 #### Project Validator
 
 Pycharm IDE integrated code inspector was used on every project file and all errors were corrected.
@@ -342,26 +344,62 @@ The deployed version of the page was tested.
 
 All links and buttons were clicked and observed on function.
 
+The different views of the page were observed, while changing size of viewport with developer tools.
+
 #### Chrome exclusive, deployed page
 
-As not logged in user
-- You can register with credentials:
-    - all fields necessary (Email, Confirm Email, Username, Password, Confirm Password)
-    - email has to be a valid email schema
-    - password has to have minimum six characters, at least one letter, one number and one special character
-        - an error is already highlighted before clicking "sign up"
-    - the others are tested on "sign up" clock
-    - a validation email is sent
-    - validation by click on link is possible
+- As not logged in user
+  - You can register with credentials:
+      - all fields necessary (Email, Confirm Email, Username, Password, Confirm Password)
+      - email has to be a valid email schema
+      - password has to have minimum six characters, at least one letter, one number and one special character
+          - an error is already highlighted before clicking "sign up"
+      - the others are tested on "sign up" clock
+      - a validation email is sent, an alert toast is shown
+      - validation by click on link is possible
+      - login is possible
+  - You can login with valid credentials
+  
+- As logged in user
+  - You can see your orders
+  - You can see your tickets
 
-- You can login with valid credentials
-    - there is a redirect to user
-
-### User-Story verification
- 
-### Slack review
+- All users
+  - You can observe a list upcoming events
+  - You can observe details of events and locations
+    - Locations open up in new tab (multiple events per location possible)
+  - You can add tickets to your cart
+    - Nav Item changes
+    - Toast is showing
+  - You can remove tickets from your cart
+    - Nav Item changes
+    - Toast is showing
+  - You can update quantity of tickets in your cart
+    - Toast is showing
+    - Quantity and subtotal is updating
+  - You can checkout
+    - checking checkbox saves data to profile
+    - if not logged in, login/signup reminder is showing
+    - Stripe Checkout page shows
+      - Items from cart are shown
+      - on checkout, email with clickable links is sent
+      - redirect on order
+  - You can see order and ticket details, if you have correct link (confirmation email)
+  - You can see printable versions of orders and tickets
+    - Navbar, Footer, Buttons etc etc are not displayed on print-preview
+  
+- A user with host permission
+  - Can create and update an event
+  - Can delete/mark as inactive an event, if no tickets are associated with it
+  - Can create and update a location
+  - Can delete/mark as inactive a location, if no events are associated with it
+  - Can create and update a ticket type
+    - An updated price on ticket type does not change price on associated orders/tickets
+  - Can delete/mark as inactive a ticket type, if no tickets are associated with it
 
 ### Readme
+
+Readme was observed on GitHub. All links were clicked.
 
 ---
 
@@ -619,11 +657,7 @@ Heroku
 * Online course photo - Photo by [Chris Montgomery](https://unsplash.com/@cwmonty?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText)
 
 * Formulation workshop - Photo by [James Coleman](https://unsplash.com/@jhc?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText) 
-  
-
-
-#### Data
-
+ 
 #### Components
 
 * Browser compatibility verification with [caniuse](https://caniuse.com/)
@@ -631,8 +665,6 @@ Heroku
 ### Media
 
 * The Font Awesome symbols were made by [Font Awesome](https://fontawesome.com/)
-
-* The first readme screenshot was taken with [ami.responsive](http://ami.responsivedesign.is/)
 
 * The favicon was generated with [favicon.io](https://favicon.io/)
 

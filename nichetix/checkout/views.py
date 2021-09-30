@@ -247,7 +247,7 @@ def checkout_stripe_wh_view(request):
                 body = render_to_string(
                     "checkout/emails/checkout_mail_success_body.txt",
                     {"order": order,
-                     "domain": settings.ALLOWED_HOSTS[0],
+                     "domain": "https://" + settings.ALLOWED_HOSTS[0],
                      })
                 send_mail(
                     subject,

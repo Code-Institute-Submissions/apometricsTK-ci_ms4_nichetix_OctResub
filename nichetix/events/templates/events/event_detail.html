@@ -7,31 +7,46 @@
 {% block content %}
 
     <div class="card">
+        {% if event.image %}
+            <img src="{{ event.image.url }}" class="card-img-top img-fluid" alt="{{ event.title }}">
+        {% endif %}
         <div class="card-body">
             <h2 class="card-title">{{ object.title }}</h2>
 
             <p> {{ object.description_short }}</p>
             <p>Date start: {{ object.date_start }}</p>
             <p>Date end: {{ object.date_end }}</p>
-            <p>Location: {{ object.location }}, {{ object.location.foreign_url }}</p>
-            <p>Host: {{ object.description_host }}</p>
-            <p>Description: {{ object.description_long }}</p>
-            <p>Event url: {{ object.foreign_url }}</p>
-            <p>Image:
-                {% if event.image %}
-                    <img src="{{ event.image.url }}" alt="{{ event.title }}">
-                {% else %}
-                    None
+            <p>Location: {{ object.location.name }}
+                <a href="{% url "events:location-detail" object.location.slug %}" target="_blank"
+                   class="btn btn-sm btn-nichetix">
+                    Location Details
+                </a>
+                {% if object.location.foreign_url %}
+                    <a href="{{ object.location.foreign_url }}" target="_blank" rel="noopener noreferrer"
+                       class="btn btn-sm btn-nichetix">
+                        Open Location Homepage
+                    </a>
                 {% endif %}
             </p>
-            <p>Image URL: {{ object.image_url }}</p>
+            <p>Host: {{ object.description_host }}</p>
+            <p>Description: {{ object.description_long }}</p>
+            <p>
+            {% if object.foreign_url %}
+                    <a href="{{ object.foreign_url }}" target="_blank" rel="noopener noreferrer"
+                       class="btn btn-sm btn-nichetix">
+                        Open Event Homepage
+                    </a>
+                {% endif %}
+            </p>
 
             {% if request.user.id != object.host_id %}
+
                 {% for ticket_type in ticket_type_list %}
+                    <hr>
                     <div>
                         <h3>{{ ticket_type.name }}</h3>
                         <p>{{ ticket_type.description_long }}</p>
-                        <p>Price: {{ ticket_type.price }}</p>
+                        <p>Price: {{ ticket_type.price }} €</p>
                         <form action="{% url "cart:add" ticket_type_id=ticket_type.id %}" method="POST">
                             {% csrf_token %}
                             <input type="hidden" name="redirect_url" value="{{ request.path }}">
@@ -42,16 +57,25 @@
                                    id="id_qty_{{ ticket_type.id }}"
                                    name="quantity" value="1" min="1"
                                    max="10"/>
-                            <input type="submit" value="Add to Cart">
+                            <input type="submit" class="btn btn-sm btn-nichetix" value="Add to Cart">
                         </form>
                     </div>
                 {% endfor %}
 
         </div>
+                <div class="card-footer">
+                    <div>
+                        <a href="{% url "events:upcoming" %}"
+                           class="btn btn-nichetix">
+                            Back
+                        </a>
+                    </div>
+                </div>
 
             {% else %}
 
                 {% for ticket_type in ticket_type_list %}
+                    <hr>
                     <div>
                         <h4>{{ ticket_type.name }}</h4>
                         <p>Sale start: {{ ticket_type.sale_start }}</p>
@@ -60,10 +84,12 @@
                         <p>Price, net: {{ ticket_type.price_net }}</p>
                         <p>Tax: {{ ticket_type.tax }}</p>
                         <p>Price: {{ ticket_type.price }}</p>
-                        <a href="{% url "tickets:ticket-type-detail" slug=ticket_type.slug event_slug=ticket_type.event.slug %}">
+                        <a href="{% url "tickets:ticket-type-detail" slug=ticket_type.slug event_slug=ticket_type.event.slug %}"
+                           class="btn btn-sm btn-nichetix">
                             Detail
                         </a>
-                        <a href="{% url "tickets:ticket-type-update" slug=ticket_type.slug event_slug=ticket_type.event.slug %}">
+                        <a href="{% url "tickets:ticket-type-update" slug=ticket_type.slug event_slug=ticket_type.event.slug %}"
+                           class="btn btn-sm btn-nichetix">
                             Update
                         </a>
                     </div>

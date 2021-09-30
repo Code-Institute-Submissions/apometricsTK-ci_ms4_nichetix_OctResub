@@ -10,22 +10,43 @@
         <div class="card-body">
             <h2 class="card-title">{{ object.name }}</h2>
 
-            <p>Name: {{ object.name }}</p>
-            <p>Street Address1: {{ object.street_address1 }}</p>
-            <p>Street Address2: {{ object.street_address2 }}</p>
-            <p>Town or City: {{ object.town_or_city }}</p>
-            <p>County: {{ object.county }}</p>
-            <p>Postcode: {{ object.postcode }}</p>
-            <p>Country: {{ object.country }}</p>
-            <p>Phone Number: {{ object.phone_number }}</p>
-            <p>Email: {{ object.email }}</p>
-            <p>Foreign URL:
-                {% if object.foreign_url %}
-                    <a href="{{ object.foreign_url }}">{{ object.foreign_url }}</a>
-                {% else %}
-                    None
+            <div>
+                <p>{{ object.name }}</p>
+                {% if object.street_address1 %}
+                    <p>{{ object.street_address1 }}</p>
                 {% endif %}
-            </p>
+                {% if object.street_address2 %}
+                    <p>{{ object.street_address2 }}</p>
+                {% endif %}
+                {% if object.town_or_city %}
+                    <p>{{ object.postcode }} {{ object.town_or_city }}</p>
+                {% endif %}
+                {% if object.county %}
+                    <p>{{ object.county }}</p>
+                {% endif %}
+                {% if object.country %}
+                    <p>{{ object.country }}</p>
+                {% endif %}
+            </div>
+
+            <div>
+                {% if object.phone_number %}
+                    <p>Phone Number: {{ object.phone_number }}</p>
+                {% endif %}
+                {% if object.email %}
+                    <p>Email: {{ object.email }}</p>
+                {% endif %}
+
+                {% if object.foreign_url %}
+                    <p>
+                        <a href="{{ object.foreign_url }}" target="_blank" rel="noopener noreferrer">
+                            {{ object.foreign_url }}
+                        </a>
+                    </p>
+                {% endif %}
+            </div>
+
+        {% if request.user.id == object.owner_id %}
             <div class="card-footer">
                 <a href="{% url "events:location-update" object.slug %}" class="btn btn-nichetix">
                     Update Location
@@ -35,6 +56,13 @@
                     Delete
                 </a>
             </div>
+        {% else %}
+            <div class="card-footer">
+                <a href="{% url "events:upcoming" %}" class="btn btn-nichetix">
+                    Back to upcoming events
+                </a>
+            </div>
+        {% endif %}
         </div>
     </div>
 

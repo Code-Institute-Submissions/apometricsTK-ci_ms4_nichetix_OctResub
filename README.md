@@ -43,7 +43,6 @@ As a…
 3. I want to provide fundamental information (description, location, ...) to my potential customers.
 4. I want to sell different tickets for events (e.g. early-bird, VIP, sales...)
 5. I want to advertise for free events (e.g. open days, village fair, ...)
-6. I want my 
 
 #### Guest or Customer with a niche interest...
 
@@ -155,6 +154,7 @@ developing](#Bugs-while-developing)).
 #### UX & Styling
 
 - Further styling for niche group
+- Add custom error pages
 - Implement dynamic forms, for example with [HTMX](https://htmx.org/)
 
 #### Prevent errors and problems
@@ -299,19 +299,63 @@ this project.
 
 ### Validators
 
+Validators were used by "copy and pasting" the code into validators. HTML was taken from the browser source code, to
+validate template schema.
+- Strg+A
+- Strg+C
+- Strg+V
+
+#### Project Validator
+
+Pycharm IDE integrated code inspector was used on every project file and all errors were corrected.
+
 #### HTML Validator
+
+The validator used is the [HTML validator](https://validator.w3.org/) and some small typos were corrected is the only issue.
 
 #### CSS Validator
 
+The stylesheets were validated by [jigsaw validator](https://jigsaw.w3.org/css-validator/) and passed without issues.
+
 #### JS Validator
+
+The scripts were validated by [JSHint](https://jshint.com/).
 
 #### Python Validator
 
+Pycharm IDE integrated code inspector was used on every project file and all errors were corrected.
+
 #### Lighthouse
+
+After first preloading of the page (to start Heroku dyno) Lighthouse evaluation results:
+
+![Lighthouse](/readmeAssets/lighthouse.jpg)
 
 ### Automated testing
 
+For the app users some automated tests were written. Adding more automated tests wasn't possible due to time issues.
+
 ### Manual testing
+
+The browsers Chrome(Version 94.0.4606.61) and Firefox (v93.0b9) were used for testing.
+The deployed version of the page was tested.
+
+All links and buttons were clicked and observed on function.
+
+#### Chrome exclusive, deployed page
+
+As not logged in user
+- You can register with credentials:
+    - all fields necessary (Email, Confirm Email, Username, Password, Confirm Password)
+    - email has to be a valid email schema
+    - password has to have minimum six characters, at least one letter, one number and one special character
+        - an error is already highlighted before clicking "sign up"
+    - the others are tested on "sign up" clock
+    - a validation email is sent
+    - validation by click on link is possible
+
+- You can login with valid credentials
+    - there is a redirect to user
 
 ### User-Story verification
  

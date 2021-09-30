@@ -15,7 +15,7 @@
     {{ widget.input_text }}
 {% endif %}
 <span class="btn btn-nichetix btn-file">
-    Select Image
+    <label for="new-image">Select Image</label>
     <input id="new-image" type="{{ widget.type }}" name="{{ widget.name }}"
             {% include "django/forms/widgets/attrs.html" %}>
 </span>

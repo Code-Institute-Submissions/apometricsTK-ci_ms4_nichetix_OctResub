@@ -114,6 +114,12 @@
     </aside>
 </section>
 
+<div class="back-print text-center">
+    <a href="{% url "checkout:order" object.slug %}" class="btn btn-nichetix">
+        Back to order
+    </a>
+</div>
+
 {% endblock content %}
 
 {% block postloadjs %}

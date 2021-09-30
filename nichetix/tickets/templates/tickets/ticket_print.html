@@ -89,6 +89,12 @@
     </aside>
 </section>
 
+<div class="back-print text-center">
+    <a href="{% url "tickets:ticket-detail" object.slug %}" class="btn btn-nichetix">
+        Back to ticket
+    </a>
+</div>
+
 {% endblock content %}
 
 {% block postloadjs %}

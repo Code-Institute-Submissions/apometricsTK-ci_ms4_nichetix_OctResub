@@ -6,7 +6,8 @@
   header,
   footer,
   div.toast,
-  button {
+  button,
+  a {
     display: none !important;
   }
 

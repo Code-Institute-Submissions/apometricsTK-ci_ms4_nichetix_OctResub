@@ -75,10 +75,6 @@ As next step in development a user role for check-in control would be able to ju
 check-in permission to prevent multiple guests using the same ticket. With some every-day-devices a basic usable 
 check-in infrastructure is provided.
 
-#### Desktop wireframe
-
-#### Mobile wireframe
-
 ### Surface
 
 For productive use a design specific to the focus-niche will attract targeted user-group. For evaluation and low-profile
@@ -305,7 +301,6 @@ validate template schema.
 - Strg+C
 - Strg+V
 
-For Database operations the local version was observed with pgAdmin.
 
 #### Project Validator
 
@@ -345,6 +340,12 @@ The deployed version of the page was tested.
 All links and buttons were clicked and observed on function.
 
 The different views of the page were observed, while changing size of viewport with developer tools.
+
+For Database operations the local version was observed with pgAdmin.
+
+For stripe webhook testing, the stripe cli redirect and the dashboard of stripe were used.
+
+For S3 testing the bucket was observed via AWS web GUI.
 
 #### Chrome exclusive, deployed page
 

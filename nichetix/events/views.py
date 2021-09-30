@@ -14,7 +14,6 @@ User = get_user_model()
 class EventsUpcomingListView(ListView):
     """
     Home View - List View of upcoming events
-    todo: refine filter: start from now on or end from now on
     """
     model = Event
     queryset = Event.objects.filter(is_active=True).filter(date_start__gte=timezone.now()).order_by("date_start")
@@ -24,7 +23,6 @@ class EventsUpcomingListView(ListView):
 class EventsManageListView(LoginRequiredMixin, ListView):
     """
     List View of Events hosted by a User
-    todo: handle empty list
     """
     model = Event
     template_name = "events/events_upcoming.html"

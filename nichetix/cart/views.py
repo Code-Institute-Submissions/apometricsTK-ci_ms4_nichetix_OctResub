@@ -22,9 +22,6 @@ def cart_add_ticket_view(request, ticket_type_id):
     redirect_url = request.POST.get("redirect_url")
     cart = request.session.get("cart", {})
 
-    # todo: test for sale_start < now < sale_end
-    # todo: test for ticket_quantity < quota left
-
     if ticket_type_id in list(cart.keys()):
         cart[ticket_type_id] += quantity
         messages.success(request, f"Updated number of {ticket_type.name} to {cart[ticket_type_id]} tickets.")

@@ -85,7 +85,6 @@ class CheckoutCreateView(CreateView):
     """
     Checkout View to check cart and add payment details,
     redirects to stripe payment page when form is valid
-    todo: Checkout button doesn't update cart!
     """
     model = Order
     form_class = OrderForm
@@ -124,8 +123,8 @@ class CheckoutCreateView(CreateView):
         2. Add default data to user profile if wished
         3. Generate OrderItem objects with it
         4. Build stripe session with Order.order_items
-        # todo: add stripe-doc url to object
         5. Redirect to stripe checkout session
+        https://stripe.com/docs/api/checkout/sessions/object
         """
         cart = self.request.session.get("cart", {})
 
@@ -157,8 +156,6 @@ class CheckoutCreateView(CreateView):
 
         for key, value in cart.items():
             try:
-                # todo: just own models? or short?
-                # item = OrderItem.ticket_type.objects.get(id=key)
                 item = TicketType.objects.get(id=key)
                 order_item = OrderItem(
                     order=order,
@@ -229,7 +226,7 @@ def checkout_stripe_wh_view(request):
         return HttpResponse(status=400)
 
     # Handle the event
-    event_data = event.data.object  # todo: into if/try statement
+    event_data = event.data.object
     stripe_pid = str(event_data.payment_intent)
     stripe_payment_status = str(event_data.payment_status)
     order_uuid = str(event_data.client_reference_id)

@@ -13,5 +13,4 @@ class TicketTypeAdmin(admin.ModelAdmin):
     )
 
 
-# todo: register Ticket
 admin.site.register(TicketType, TicketTypeAdmin)

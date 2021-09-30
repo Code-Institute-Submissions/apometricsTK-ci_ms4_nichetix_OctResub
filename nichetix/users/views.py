@@ -23,8 +23,6 @@ class UserDetailView(LoginRequiredMixin, DetailView):
 class UserUpdateView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
     """
     User Profile Update View
-    todo: email? allauth version?
-    todo: reverse_lazy for all success_urls possible?
     """
     fields = [
         "company_name",

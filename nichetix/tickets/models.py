@@ -69,8 +69,6 @@ class TicketType(models.Model):
         """
         return self.price_net + self.tax_amount
 
-    # todo: implement method to get quota of remaining tickets of this type
-
     def generate_tickets(self, quantity, order_item):
         """
         Generate "quantity" tickets associated to "OrderItem"
@@ -82,7 +80,6 @@ class TicketType(models.Model):
 class Ticket(models.Model):
     """
     Unique ticket sold
-    # todo: implement ticket status active, cancelled, checked_in, ...
     """
     id = models.UUIDField("Ticket id", primary_key=True, default=uuid.uuid4, editable=False)
     slug = AutoSlugField("Ticket URL", populate_from="uuid_as_str")

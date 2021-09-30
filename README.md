@@ -140,6 +140,11 @@ developing](#Bugs-while-developing)).
 - Implement a host-application process (depends on selected niche).
 - Implement multi-party-payments with stripe.
 - Implement a refund process with stripe.
+- Validate sale dates: sale_start < sale_end
+
+#### Ease of use - admin
+
+- Config admin dashboard
 
 #### Monitoring
 - Add logging.
@@ -149,7 +154,17 @@ developing](#Bugs-while-developing)).
 
 #### UX & Styling
 
+- Further styling for niche group
 - Implement dynamic forms, for example with [HTMX](https://htmx.org/)
+
+#### Prevent errors and problems
+
+- Add more automated tests
+- Validate checkout
+  - set input.quantity max to quota left
+  - TicketType.sale_start < now < sale_end
+  - Quantity < Quota Left
+- Handle webhook errors
 
 ---
 
@@ -550,6 +565,18 @@ Heroku
 ## Credits
 
 ### Content
+
+* Coaching event photo - Photo by [krakenimages](https://unsplash.com/@krakenimages?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText)
+
+* Brown bag workshop photo - Photo by [Dmitry Mashkin](https://unsplash.com/@artcoastdesign?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText)
+
+* Lecture photo - Photo by [Dom Fou](https://unsplash.com/@domlafou?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText)
+
+* Online course photo - Photo by [Chris Montgomery](https://unsplash.com/@cwmonty?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText)
+
+* Formulation workshop - Photo by [James Coleman](https://unsplash.com/@jhc?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText) 
+  
+
 
 #### Data
 

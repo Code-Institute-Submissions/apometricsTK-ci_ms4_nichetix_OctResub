@@ -3,6 +3,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.views.generic import CreateView, DetailView, UpdateView, ListView
 from django.urls import reverse
+from django.shortcuts import get_object_or_404
 
 from .models import TicketType, Ticket
 from .forms import TicketTypeForm
@@ -17,12 +18,17 @@ class TicketTypeDetailView(LoginRequiredMixin, UserPassesTestMixin, DetailView):
     Details to the ticket type for the host of the event
     """
     model = TicketType
-    slug_field = "slug"
     template_name = "tickets/ticket_type_detail.html"
 
     def test_func(self):
         obj = self.get_object()
         return obj.event.host == self.request.user
+
+    def get_object(self, queryset=None):
+        slug = self.kwargs.get("slug")
+        event_slug = self.kwargs.get("event_slug")
+        queryset = TicketType.objects.filter(event__slug=event_slug)
+        return get_object_or_404(queryset, slug=slug)
 
 
 class TicketTypeCreateView(LoginRequiredMixin, UserPassesTestMixin, SuccessMessageMixin, CreateView):

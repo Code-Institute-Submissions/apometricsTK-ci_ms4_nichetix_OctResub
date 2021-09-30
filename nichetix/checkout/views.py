@@ -189,8 +189,8 @@ class CheckoutCreateView(CreateView):
                 "card",
             ],
             mode="payment",
-            success_url=DOMAIN + "/checkout/success/" + order.slug,
-            cancel_url=DOMAIN + "/checkout/cancel/" + order.slug,
+            success_url="https://" + DOMAIN + "/checkout/success/" + order.slug,
+            cancel_url="https://" + DOMAIN + "/checkout/cancel/" + order.slug,
             customer_email=order.email,
             client_reference_id=order.uuid_as_str,
         )

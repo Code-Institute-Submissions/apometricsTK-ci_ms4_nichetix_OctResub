@@ -293,6 +293,18 @@ The provided datetime for the initial data is timezone-naive(!) - providing only
 jquery DateTimePicker (format for timezone hour-offset: "O", undocumented(?)) and custom widgets, was out of scope for
 this project.
 
+#### Debug mode active
+
+Debug mode was active in the deployed version due to a missing parenthesis in settings.py .
+```
+DEBUG = "DEVELOPMENT" or "DEBUG" in os.environ
+```
+results in 'DEVELOPMENT' and in Python therefore in "True" (bool(nonemptyString) == True).
+Correct is:
+```
+DEBUG = ("DEVELOPMENT" or "DEBUG") in os.environ
+```
+
 ### Validators
 
 Validators were used by "copy and pasting" the code into validators. HTML was taken from the browser source code, to

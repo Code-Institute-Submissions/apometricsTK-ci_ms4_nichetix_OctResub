@@ -31,7 +31,7 @@ APPS_DIR = BASE_DIR / "nichetix"
 SECRET_KEY = os.environ.get('SECRET_KEY', '')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = "DEVELOPMENT" or "DEBUG" in os.environ
+DEBUG = ("DEVELOPMENT" or "DEBUG") in os.environ
 
 SECURE_SSL_REDIRECT = "DEVELOPMENT" not in os.environ
 SESSION_COOKIE_HTTPONLY = True

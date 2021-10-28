@@ -75,6 +75,9 @@ As next step in development a user role for check-in control would be able to ju
 check-in permission to prevent multiple guests using the same ticket. With some every-day-devices a basic usable 
 check-in infrastructure is provided.
 
+The following database schema was developed.
+![database schema](/readmeAssets/schema.jpg) 
+
 ### Surface
 
 For productive use a design specific to the focus-niche will attract targeted user-group. For evaluation and low-profile

@@ -305,7 +305,7 @@ DEBUG = "DEVELOPMENT" or "DEBUG" in os.environ
 results in 'DEVELOPMENT' and in Python therefore in "True" (bool(nonemptyString) == True).
 Correct is:
 ```
-DEBUG = ("DEVELOPMENT" or "DEBUG") in os.environ
+DEBUG = ("DEVELOPMENT" in os.environ) or ("DEBUG" in os.environ)
 ```
 
 ### Validators

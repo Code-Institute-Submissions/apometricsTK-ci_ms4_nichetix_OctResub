@@ -31,7 +31,7 @@ APPS_DIR = BASE_DIR / "nichetix"
 SECRET_KEY = os.environ.get('SECRET_KEY', '')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = ("DEVELOPMENT" or "DEBUG") in os.environ
+DEBUG = ("DEVELOPMENT" in os.environ) or ("DEBUG" in os.environ)
 
 SECURE_SSL_REDIRECT = "DEVELOPMENT" not in os.environ
 SESSION_COOKIE_HTTPONLY = True
@@ -42,7 +42,7 @@ SECURE_BROWSER_XSS_FILTER = True
 
 if "DEVELOPMENT" in os.environ:
     ALLOWED_HOSTS = [
-        "http://localhost:8000",
+        "localhost:8000",
         "localhost",
         "127.0.0.1",
     ]
